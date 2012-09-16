@@ -1,3 +1,21 @@
+current focus
+-------------
+- basic site using bootstrap
+    - map
+- tabs in sidebar
+    - history
+    - objects
+    - map stats
+        - center - not implemented
+        - bounding box - not implemented
+- basic backbone
+    - map stats model
+    - map drag updates the model
+    - map stats view get updated
+
+
+all features
+------------
 / mark point by coordinates -> yellow
 / option to show coordinates on mouse hover
 / map stats
@@ -40,6 +58,36 @@
     - action history
 - double-click on history item to redo it
 - unique numbering for markers (until manually changed. option to reset)
+
+
+docs
+----
+- docs
+    https://developers.google.com/maps/documentation/javascript/reference
+    https://developers.google.com/maps/documentation/webservices/
+    https://developers.google.com/maps/documentation/geocoding/
+    https://developers.google.com/places/documentation/
+    https://developers.google.com/maps/documentation/javascript/places
+- place search
+    https://google-developers.appspot.com/maps/documentation/javascript/examples/place-search
+    https://developers.google.com/maps/documentation/javascript/places
+    https://developers.google.com/places/documentation/
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/localsearch/places.html
+- spreadsheet
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html
+- geocoding
+    https://google-developers.appspot.com/maps/documentation/javascript/examples/geocoding-reverse
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/geocoder/v3-geocoder-tool.html
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/geocoder/getlatlng.html
+    https://google-developers.appspot.com/maps/documentation/javascript/examples/geocoding-simple
+- marker dragging
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/draggable-markers/draggable-markers.html
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/geocoder/getlatlng.html
+- rectangle / bounding box selector
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/rectangle-overlay/rectangle-overlay.html
+- calculate distance
+    http://www.barattalo.it/examples/ruler.html
+
 
 
 time accounting: 2

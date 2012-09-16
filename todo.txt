@@ -1,0 +1,45 @@
+/ mark point by coordinates -> yellow
+/ option to show coordinates on mouse hover
+/ map stats
+    - center
+    - sw=, ne=
+/ place markers for coordinates from google spreadsheet
+    - http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html
+/ place markers for addresses from google spreadsheet
+/ drop pin -> blue
+/ search for places -> red pin
+    - pin search results on click
+    - 'append' search results
+/ center map, using specified zoom level
+    - tell center and current zoom level
+/ select bounding box by drag and drop markers
+/ measure distance
+/ clear markers
+/ bookmark
+/ export as kml
+/ export as csv
+/ share
+/ source code (of specific feature)
+/ quick marker editing on click: change to X
+- right-click on marker menu
+    - change marker
+/ auto-zoom
+/ object list
+    - highlight on click
+    - infowindow on click
+    - show detailed info on click
+/ action history
+- use backbone to update all views of the same objects
+- can show/hide toolbars
+    - spreadsheet tools - hidden by default
+    - location tool
+    - search tool
+    - save-export-share tools
+    - map stats
+    - object list
+    - action history
+- double-click on history item to redo it
+- unique numbering for markers (until manually changed. option to reset)
+
+
+time accounting: 2

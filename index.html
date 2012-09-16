@@ -58,26 +58,39 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li class="nav-header">Sidebar</li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+          <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Map</a></li>
+                <li><a href="#tab2" data-toggle="tab">Objects</a></li>
+                <li><a href="#tab3" data-toggle="tab">History</a></li>
             </ul>
-          </div><!--/.well -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                    <dl>
+                        <dt>Latitude:</dt>
+                        <dd class="latitude">N.A.</dd>
+                        <dt>Longitude:</dt>
+                        <dd class="longitude">N.A.</dd>
+                        <dt>Zoom:</dt>
+                        <dd class="zoom">N.A.</dd>
+                        <dt>SW Latitude:</dt>
+                        <dd class="sw-latitude">N.A.</dd>
+                        <dt>SW Longitude:</dt>
+                        <dd class="sw-longitude">N.A.</dd>
+                        <dt>NE Latitude:</dt>
+                        <dd class="ne-latitude">N.A.</dd>
+                        <dt>NE Longitude:</dt>
+                        <dd class="ne-longitude">N.A.</dd>
+                    </dl>
+                </div>
+                <div class="tab-pane" id="tab2">
+                    <p>List of objects will come here</p>
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <p>History entries will come here</p>
+                </div>
+            </div>
+          </div><!--/.tabbable -->
         </div><!--/span-->
         <div class="span9">
           <div class="hero-unit">

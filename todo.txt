@@ -1,9 +1,7 @@
 current focus
 -------------
-- basic backbone
-    - map stats model
-    - map drag updates the model
-    - map stats view get updated
+- lat-lon-zoom-pin tool in a tabbed control above the map
+    - remove the headings from below
 
 
 all features

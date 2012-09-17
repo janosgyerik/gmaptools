@@ -41,9 +41,10 @@ function initialize() {
 
 function centerChanged() {
     var latlng = map.getCenter();
-    $('.tab-content .latitude').text(latlng.lat());
-    $('.tab-content .longitude').text(latlng.lng());
-    $('.tab-content .zoom').text(map.getZoom());
+    //$('.tab-content .latitude').text(latlng.lat());
+    //$('.tab-content .longitude').text(latlng.lng());
+    //$('.tab-content .zoom').text(map.getZoom());
+    App.mapStats.update(map);
 }
 
 

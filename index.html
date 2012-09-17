@@ -61,28 +61,12 @@
         <div class="span3">
           <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab">Map</a></li>
+                <li class="active"><a href="#mapstats-details" data-toggle="tab">Map</a></li>
                 <li><a href="#tab2" data-toggle="tab">Objects</a></li>
                 <li><a href="#tab3" data-toggle="tab">History</a></li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="tab1">
-                    <dl>
-                        <dt>Latitude:</dt>
-                        <dd class="latitude">N.A.</dd>
-                        <dt>Longitude:</dt>
-                        <dd class="longitude">N.A.</dd>
-                        <dt>Zoom:</dt>
-                        <dd class="zoom">N.A.</dd>
-                        <dt>SW Latitude:</dt>
-                        <dd class="sw-latitude">N.A.</dd>
-                        <dt>SW Longitude:</dt>
-                        <dd class="sw-longitude">N.A.</dd>
-                        <dt>NE Latitude:</dt>
-                        <dd class="ne-latitude">N.A.</dd>
-                        <dt>NE Longitude:</dt>
-                        <dd class="ne-longitude">N.A.</dd>
-                    </dl>
+                <div class="tab-pane active" id="mapstats-details">
                 </div>
                 <div class="tab-pane" id="tab2">
                     <p>List of objects will come here</p>
@@ -94,6 +78,8 @@
           </div><!--/.tabbable -->
         </div><!--/span-->
         <div class="span9">
+          <div class="row-fluid" id="mapstats-quickview">
+          </div>
           <div class="row-fluid" id="map">
             <h1>Hello, world!</h1>
             <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
@@ -127,6 +113,38 @@
 
     </div><!--/.fluid-container-->
 
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="mapstats-details-template">
+    <div class="view">
+        <dl>
+            <dt>Latitude:</dt>
+            <dd><%= latitude %></dd>
+            <dt>Longitude:</dt>
+            <dd><%= longitude %></dd>
+            <dt>Zoom:</dt>
+            <dd><%= zoom %></dd>
+            <dt>South-West Latitude:</dt>
+            <dd><%= sw_latitude %></dd>
+            <dt>South-West Longitude:</dt>
+            <dd><%= sw_longitude %></dd>
+            <dt>North-East Latitude:</dt>
+            <dd><%= ne_latitude %></dd>
+            <dt>North-East Longitude:</dt>
+            <dd><%= ne_longitude %></dd>
+        </dl>
+    </div>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="mapstats-quickview-template">
+    <div class="view mapstats-quickview">
+        zoom=<%= zoom %>
+        center=@(<%= latitude %>, <%= longitude %>)
+        sw=@(<%= sw_latitude %>, <%= sw_longitude %>)
+        ne=@(<%= ne_latitude %>, <%= ne_longitude %>)
+    </div>
+</script>
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -138,6 +156,7 @@
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/js/underscore-min.js"></script>
     <script src="static/js/backbone-min.js"></script>
+    <script src="static/js/gmaptools.backbone.js"></script>
     <script src="static/js/gmaptools.js"></script>
 
   </body>

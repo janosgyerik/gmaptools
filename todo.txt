@@ -1,7 +1,5 @@
 current focus
 -------------
-- basic site using bootstrap
-    - map
 - basic backbone
     - map stats model
     - map drag updates the model
@@ -83,5 +81,4 @@ docs
     http://www.barattalo.it/examples/ruler.html
 
 
-
-time accounting: 2
+time accounting: 4

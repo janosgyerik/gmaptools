@@ -13,12 +13,10 @@ var map;
 
 function initialize() {
     var latlng;
-    var loc = {};
     if (google.loader.ClientLocation) {
-        loc.lat = google.loader.ClientLocation.latitude;
-        loc.lng = google.loader.ClientLocation.longitude;
-
-        latlng = new google.maps.LatLng(loc.lat, loc.lng);
+        lat = google.loader.ClientLocation.latitude;
+        lng = google.loader.ClientLocation.longitude;
+        latlng = new google.maps.LatLng(lat, lng);
     }
     else {
         latlng = new google.maps.LatLng(32.5468, -23.2031);
@@ -33,17 +31,12 @@ function initialize() {
     google.maps.event.addListener(map, 'center_changed', centerChanged);
     centerChanged();
 
-    //var bounds = new google.maps.LatLngBounds(latlng, latlng);
     //map.panTo(latlng);
     //map.panToBounds(bounds);
     //map.fitBounds(bounds);
 }
 
 function centerChanged() {
-    var latlng = map.getCenter();
-    //$('.tab-content .latitude').text(latlng.lat());
-    //$('.tab-content .longitude').text(latlng.lng());
-    //$('.tab-content .zoom').text(map.getZoom());
     App.mapStats.update(map);
 }
 

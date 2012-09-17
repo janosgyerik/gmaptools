@@ -64,14 +64,12 @@ $(function() {
         }
     });
 
-    var mapStats = new MapStats;
-
     window.App = {
     };
 
-    App.mapStats = mapStats;
+    var mapStats = App.mapStats = new MapStats;
 
-    App.stats1 = new MapStatsDetails({
+    App.detailedstats = new MapStatsDetails({
         el: $('#mapstats-details'),
         model: mapStats
     });
@@ -82,7 +80,7 @@ $(function() {
     });
 
     mapStats.on('change', function() {
-        App.stats1.render();
+        App.detailedstats.render();
         App.quickstats.render();
     });
 });

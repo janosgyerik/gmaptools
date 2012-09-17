@@ -138,10 +138,14 @@
 <!-- TODO: this should be moved to a file to serve via CDN -->
 <script type="text/template" id="mapstats-quickview-template">
     <div class="view mapstats-quickview">
-        zoom=<%= zoom %>
-        center=@(<%= latitude %>, <%= longitude %>)
-        sw=@(<%= sw_latitude %>, <%= sw_longitude %>)
-        ne=@(<%= ne_latitude %>, <%= ne_longitude %>)
+        <div>
+            center=@(<%= latitude %>, <%= longitude %>)
+            zoom=<%= zoom %>
+        </div>
+        <div>
+            sw=@(<%= sw_latitude %>, <%= sw_longitude %>)
+            ne=@(<%= ne_latitude %>, <%= ne_longitude %>)
+        </div>
     </div>
 </script>
 

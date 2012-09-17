@@ -1,25 +1,28 @@
 current focus
 -------------
-- lat-lon-zoom-pin tool in a tabbed control above the map
-    - remove the headings from below
+- cleanup latlon tool
+    - drop blue pin
+- add search tool
+    - search -> red pins
+    - append -> different color pins
+    ? geocode
+    ? local
+- marker tool
+    - place marker on click
+    - edit marker icon
+- about page
+- options tab
+    - option to show coordinates on mouse hover
+    - draggable markers
+- add crosshair at map center
 
 
 all features
 ------------
 / mark point by coordinates -> yellow
-/ option to show coordinates on mouse hover
-/ map stats
-    - center
-    - sw=, ne=
 / place markers for coordinates from google spreadsheet
     - http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html
 / place markers for addresses from google spreadsheet
-/ drop pin -> blue
-/ search for places -> red pin
-    - pin search results on click
-    - 'append' search results
-/ center map, using specified zoom level
-    - tell center and current zoom level
 / select bounding box by drag and drop markers
 / measure distance
 / clear markers
@@ -33,19 +36,13 @@ all features
     - change marker
 / auto-zoom
 / object list
-    - highlight on click
+    - highlight and goto on click
     - infowindow on click
     - show detailed info on click
 / action history
-- use backbone to update all views of the same objects
-- can show/hide toolbars
+- tools
     - spreadsheet tools - hidden by default
-    - location tool
-    - search tool
     - save-export-share tools
-    - map stats
-    - object list
-    - action history
 - double-click on history item to redo it
 - unique numbering for markers (until manually changed. option to reset)
 
@@ -81,4 +78,4 @@ docs
     http://gmaps-samples-v3.googlecode.com/svn/trunk/commonloader/clientlocation.html
 
 
-time accounting: 4
+time accounting: 5

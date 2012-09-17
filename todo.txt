@@ -79,6 +79,8 @@ docs
     http://gmaps-samples-v3.googlecode.com/svn/trunk/rectangle-overlay/rectangle-overlay.html
 - calculate distance
     http://www.barattalo.it/examples/ruler.html
+- client location
+    http://gmaps-samples-v3.googlecode.com/svn/trunk/commonloader/clientlocation.html
 
 
 time accounting: 4

@@ -12,35 +12,31 @@
 var map;
 
 function initialize() {
-    var latlng = new google.maps.LatLng(32.5468, -23.2031);
-    var myOptions = {
-        zoom: 14,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    var latlng;
     var loc = {};
-    var geocoder = new google.maps.Geocoder();
     if (google.loader.ClientLocation) {
         loc.lat = google.loader.ClientLocation.latitude;
         loc.lng = google.loader.ClientLocation.longitude;
 
         latlng = new google.maps.LatLng(loc.lat, loc.lng);
-        myOptions.center = latlng;
-        /*
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                alert(results[0]['formatted_address']);
-            };
-        });
-        */
     }
-    map = new google.maps.Map(document.getElementById('map'), myOptions);
+    else {
+        latlng = new google.maps.LatLng(32.5468, -23.2031);
+    }
+    var options = {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('map'), options);
+
     google.maps.event.addListener(map, 'center_changed', centerChanged);
+    centerChanged();
+
     //var bounds = new google.maps.LatLngBounds(latlng, latlng);
     //map.panTo(latlng);
     //map.panToBounds(bounds);
     //map.fitBounds(bounds);
-    centerChanged();
 }
 
 function centerChanged() {
@@ -53,7 +49,6 @@ function centerChanged() {
 
 $(document).ready(function() {
     google.load("maps", "3.x", {other_params: "sensor=false", callback:initialize});
-    //initialize();
 });
 
 // eof

@@ -69,6 +69,18 @@ function initialize_latlon_tool() {
         return lat && lon ? new_point(lat, lon) : map.getCenter();
     }
 
+    lat_input.keyup(function(e) {
+        if (e.keyCode == '13') {
+            pan_to(get_point());
+        }
+    });
+    
+    lon_input.keyup(function(e) {
+        if (e.keyCode == '13') {
+            pan_to(get_point());
+        }
+    });
+    
     var btn_goto = form.find('.btn-goto');
     btn_goto.bind('click', function() {
         pan_to(get_point());
@@ -142,6 +154,42 @@ function reverseGeocodeResult(results, status) {
       }
       text = text + '<br>' + 'address: <br>' + addr;
     }
+
+    geocoder = new google.maps.Geocoder();
+function codeAddress() {
+        var address = document.getElementById('address').value;
+        geocoder.geocode( { 'address': address}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+   
+  // Add dragging event listeners.
+  google.maps.event.addListener(marker, 'dragstart', function() {
+    updateMarkerAddress('Dragging...');
+  });
+  
+  google.maps.event.addListener(marker, 'drag', function() {
+    updateMarkerStatus('Dragging...');
+    updateMarkerPosition(marker.getPosition());
+  });
+  
+  google.maps.event.addListener(marker, 'dragend', function() {
+    updateMarkerStatus('Drag ended');
+    geocodePosition(marker.getPosition());
+  });
+}
+
+// Onload handler to fire off the app.
+google.maps.event.addDomListener(window, 'load', initialize);
+
 
  * 
 */

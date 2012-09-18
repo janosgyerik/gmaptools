@@ -5,8 +5,27 @@
  * */
 
 #map {
+    position: relative;
+}
+
+#map_canvas {
     height: 400px;
     width: 100%;
 }
+
+/* top, margin-left are tuned to #map.height=400 */
+div#crosshair {
+    position: absolute;
+    top: 190px;
+    height: 19px;
+    width: 19px;
+    left: 50%;
+    margin-left: -10px;
+    display: block;
+    background: url(../images/crosshair.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
 
 /* eof */

@@ -1,7 +1,9 @@
 current focus
 -------------
 - cleanup latlon tool
+    - marker factory
     - drop blue pin
+    - clean up method calls
 - add search tool
     - search -> red pins
     - append -> different color pins
@@ -14,7 +16,7 @@ current focus
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers
-- add crosshair at map center
+    - crosshair on/off
 
 
 all features
@@ -78,4 +80,4 @@ docs
     http://gmaps-samples-v3.googlecode.com/svn/trunk/commonloader/clientlocation.html
 
 
-time accounting: 5
+time accounting: 6

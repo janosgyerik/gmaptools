@@ -11,28 +11,6 @@
 
 var map;
 
-function initialize_map() {
-    var latlng;
-    if (google.loader.ClientLocation) {
-        var lat = google.loader.ClientLocation.latitude;
-        var lng = google.loader.ClientLocation.longitude;
-        latlng = new google.maps.LatLng(lat, lng);
-    }
-    else {
-        latlng = new google.maps.LatLng(32.5468, -23.2031);
-    }
-    var options = {
-        zoom: 14,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById('map'), options);
-
-    google.maps.event.addListener(map, 'center_changed', centerChanged);
-    google.maps.event.addListener(map, 'zoom_changed', centerChanged);
-    centerChanged();
-}
-
 function new_point(lat, lon) {
     return new google.maps.LatLng(lat, lon);
 }
@@ -56,6 +34,28 @@ function home() {
         var lon = google.loader.ClientLocation.longitude;
         pan_to(new_point(lat, lon));
     }
+}
+
+function initialize_map() {
+    var latlng;
+    if (google.loader.ClientLocation) {
+        var lat = google.loader.ClientLocation.latitude;
+        var lng = google.loader.ClientLocation.longitude;
+        latlng = new google.maps.LatLng(lat, lng);
+    }
+    else {
+        latlng = new google.maps.LatLng(32.5468, -23.2031);
+    }
+    var options = {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('map_canvas'), options);
+
+    google.maps.event.addListener(map, 'center_changed', centerChanged);
+    google.maps.event.addListener(map, 'zoom_changed', centerChanged);
+    centerChanged();
 }
 
 function initialize_latlon_tool() {
@@ -101,6 +101,50 @@ function centerChanged() {
     //map.panToBounds(bounds);
     //map.fitBounds(bounds);
 }
+
+// get address from coordinates
+// geocoder.geocode({latLng:map.getCenter()},reverseGeocodeResult);
+/*
+function reverseGeocodeResult(results, status) {
+    currentReverseGeocodeResponse = results;
+    if(status == 'OK') {
+      if(results.length == 0) {
+        document.getElementById('formatedAddress').innerHTML = 'None';
+      } else {
+        document.getElementById('formatedAddress').innerHTML = results[0].formatted_address;
+      }
+    } else {
+      document.getElementById('formatedAddress').innerHTML = 'Error';
+    }
+  }
+
+  function geocode() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode({
+      'address': address,
+      'partialmatch': true}, geocodeResult);
+  }
+
+  function geocodeResult(results, status) {
+    if (status == 'OK' && results.length > 0) {
+      map.fitBounds(results[0].geometry.viewport);
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+  }
+
+    if(currentReverseGeocodeResponse) {
+      var addr = '';
+      if(currentReverseGeocodeResponse.size == 0) {
+        addr = 'None';
+      } else {
+        addr = currentReverseGeocodeResponse[0].formatted_address;
+      }
+      text = text + '<br>' + 'address: <br>' + addr;
+    }
+
+ * 
+*/
 
 
 $(document).ready(function() {

@@ -79,4 +79,3 @@ docs
     http://gmaps-samples-v3.googlecode.com/svn/trunk/commonloader/clientlocation.html
 
 
-time accounting: 6

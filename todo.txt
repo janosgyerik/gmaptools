@@ -12,7 +12,6 @@ current focus
 - marker tool
     - place marker on click
     - edit marker icon
-- about page
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers

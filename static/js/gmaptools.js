@@ -9,34 +9,47 @@
  */
 
 
+var palette_baseurl = "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons";
+var defaultIcon_src = palette_baseurl + '/green.png';
+var latlonIcon_src = palette_baseurl + '/blue-dot.png';
+var searchIcon_src = palette_baseurl + '/red-dot.png';
+
 var map;
 
-function new_point(lat, lon) {
+var icons = {};
+
+function createLatLng(lat, lon) {
     return new google.maps.LatLng(lat, lon);
 }
 
-function pan_to(point) {
-    map.panTo(point);
-}
+var markers = [];
 
-function drop_pin(point) {
-    pan_to(point);
-    // TODO: use factory to keep reference to markers
+function createMarker(latlng, icon) {
     var marker = new google.maps.Marker({
-        position: point,
-        map: map
+        position: latlng,
+        map: map,
+        title: latlng.toString(),
+        icon: icon
     });
+    markers.push(marker);
+    return marker;
 }
 
-function home() {
-    if (google.loader.ClientLocation) {
-        var lat = google.loader.ClientLocation.latitude;
-        var lon = google.loader.ClientLocation.longitude;
-        pan_to(new_point(lat, lon));
-    }
+function createMarkerImage(src) {
+    return new google.maps.MarkerImage(src);
 }
 
-function initialize_map() {
+function centerChanged() {
+    App.mapStats.update(map);
+    //map.panTo(latlng);
+    //map.panToBounds(bounds);
+    //map.fitBounds(bounds);
+}
+
+function initGoogleMap() {
+    icons.default = createMarkerImage(defaultIcon_src);
+    icons.latlon = createMarkerImage(latlonIcon_src);
+
     var latlng;
     if (google.loader.ClientLocation) {
         var lat = google.loader.ClientLocation.latitude;
@@ -58,41 +71,52 @@ function initialize_map() {
     centerChanged();
 }
 
-function initialize_latlon_tool() {
+function initLatlonTool() {
     var form = $('#latlon-tool');
     var lat_input = form.find('.lat');
     var lon_input = form.find('.lon');
 
-    function get_point() {
+    function getLatLng() {
         var lat = lat_input.val();
         var lon = lon_input.val();
-        return lat && lon ? new_point(lat, lon) : map.getCenter();
+        return lat && lon ? createLatLng(lat, lon) : map.getCenter();
     }
 
-    lat_input.keyup(function(e) {
-        if (e.keyCode == '13') {
-            pan_to(get_point());
+    function gotoLatLng() {
+        map.panTo(getLatLng());
+    }
+
+    function dropPin() {
+        var latlng = getLatLng();
+        map.panTo(latlng);
+        createMarker(latlng, icons.latlon);
+    }
+
+    function gotoHome() {
+        if (google.loader.ClientLocation) {
+            var lat = google.loader.ClientLocation.latitude;
+            var lon = google.loader.ClientLocation.longitude;
+            map.panTo(createLatLng(lat, lon));
         }
-    });
-    
-    lon_input.keyup(function(e) {
+    }
+
+    function onKeyUp(e) {
         if (e.keyCode == '13') {
-            pan_to(get_point());
+            gotoLatLng();
         }
-    });
+    }
+
+    lat_input.keyup(onKeyUp);
+    lon_input.keyup(onKeyUp);
     
     var btn_goto = form.find('.btn-goto');
-    btn_goto.bind('click', function() {
-        pan_to(get_point());
-    });
+    btn_goto.bind('click', gotoLatLng);
 
     var btn_pin = form.find('.btn-pin');
-    btn_pin.bind('click', function() {
-        drop_pin(get_point());
-    });
+    btn_pin.bind('click', dropPin);
 
     var btn_home = form.find('.btn-home');
-    btn_home.bind('click', home);
+    btn_home.bind('click', gotoHome);
 
     var btn_here = form.find('.btn-here');
     btn_here.bind('click', function() {
@@ -103,15 +127,8 @@ function initialize_latlon_tool() {
 }
 
 function initialize() {
-    initialize_map();
-    initialize_latlon_tool();
-}
-
-function centerChanged() {
-    App.mapStats.update(map);
-    //map.panTo(latlng);
-    //map.panToBounds(bounds);
-    //map.fitBounds(bounds);
+    initGoogleMap();
+    initLatlonTool();
 }
 
 // get address from coordinates

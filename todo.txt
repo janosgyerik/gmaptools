@@ -1,9 +1,5 @@
 current focus
 -------------
-- cleanup latlon tool
-    - marker factory
-    - drop blue pin
-    - clean up method calls
 - add search tool
     - search -> red pins
     - append -> different color pins

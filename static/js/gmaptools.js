@@ -18,6 +18,7 @@ var geocodeIcon_src = palette_baseurl + '/orange-dot.png';
 
 var map;
 
+// preloaded MarkerIcon objects
 var icons = {};
 
 function createLatLng(lat, lon) {
@@ -42,7 +43,7 @@ function createMarkerImage(src, size, origin, anchor, scaledSize) {
 }
 
 function centerChanged() {
-    App.mapStats.update(map);
+    App.mapInfo.update(map);
     //map.panTo(latlng);
     //map.panToBounds(bounds);
     //map.fitBounds(bounds);

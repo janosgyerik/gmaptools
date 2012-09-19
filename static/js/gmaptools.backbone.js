@@ -10,7 +10,7 @@
 
 
 $(function() {
-    var MapStats = Backbone.Model.extend({
+    var MapInfo = Backbone.Model.extend({
         _NA: 'N.A.',
 
         initialize: function() {
@@ -46,8 +46,8 @@ $(function() {
         }
     });
 
-    var MapStatsDetails = Backbone.View.extend({
-        template: _.template($('#mapstats-details-template').html()),
+    var MapInfoDetails = Backbone.View.extend({
+        template: _.template($('#mapinfo-details-template').html()),
 
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
@@ -55,8 +55,8 @@ $(function() {
         }
     });
 
-    var MapStatsQuickView = Backbone.View.extend({
-        template: _.template($('#mapstats-quickview-template').html()),
+    var MapInfoQuickView = Backbone.View.extend({
+        template: _.template($('#mapinfo-quickview-template').html()),
 
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
@@ -67,19 +67,19 @@ $(function() {
     window.App = {
     };
 
-    var mapStats = App.mapStats = new MapStats;
+    var mapInfo = App.mapInfo = new MapInfo;
 
-    App.detailedstats = new MapStatsDetails({
-        el: $('#mapstats-details'),
-        model: mapStats
+    App.detailedstats = new MapInfoDetails({
+        el: $('#mapinfo-details'),
+        model: mapInfo
     });
 
-    App.quickstats = new MapStatsQuickView({
-        el: $('#mapstats-quickview'),
-        model: mapStats
+    App.quickstats = new MapInfoQuickView({
+        el: $('#mapinfo-quickview'),
+        model: mapInfo
     });
 
-    mapStats.on('change', function() {
+    mapInfo.on('change', function() {
         App.detailedstats.render();
         App.quickstats.render();
     });

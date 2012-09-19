@@ -9,8 +9,7 @@ current focus
     - option to show coordinates on mouse hover
     - draggable markers
     - crosshair on/off
-- mapstats
-    - rename to MapInfo
+- mapinfo
     - add reverse geocode (address from latlon) on dragend
         - and on Reverse Geocode click in Geocode tool
     - add status

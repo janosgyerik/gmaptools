@@ -60,12 +60,12 @@
         <div class="span3">
           <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#mapstats-details" data-toggle="tab">Map</a></li>
+                <li class="active"><a href="#mapinfo-details" data-toggle="tab">Map</a></li>
                 <li><a href="#tab2" data-toggle="tab">Objects</a></li>
                 <li><a href="#tab3" data-toggle="tab">History</a></li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="mapstats-details">
+                <div class="tab-pane active" id="mapinfo-details">
                 </div>
                 <div class="tab-pane" id="tab2">
                     <p>List of objects will come here</p>
@@ -131,7 +131,7 @@
     </div><!--/.fluid-container-->
 
 <!-- TODO: this should be moved to a file to serve via CDN -->
-<script type="text/template" id="mapstats-details-template">
+<script type="text/template" id="mapinfo-details-template">
     <div class="view">
         <dl>
             <dt>Latitude:</dt>
@@ -153,8 +153,8 @@
 </script>
 
 <!-- TODO: this should be moved to a file to serve via CDN -->
-<script type="text/template" id="mapstats-quickview-template">
-    <div class="view mapstats-quickview">
+<script type="text/template" id="mapinfo-quickview-template">
+    <div class="view mapinfo-quickview">
         <div>
             zoom=<%= zoom %>
             center=@(<%= latitude %>, <%= longitude %>)

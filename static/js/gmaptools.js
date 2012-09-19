@@ -13,6 +13,8 @@ var palette_baseurl = "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons";
 var defaultIcon_src = palette_baseurl + '/green.png';
 var latlonIcon_src = palette_baseurl + '/blue-dot.png';
 var searchIcon_src = palette_baseurl + '/red-dot.png';
+var localSearchIcon_src = palette_baseurl + '/yellow-dot.png';
+var geocodeIcon_src = palette_baseurl + '/orange-dot.png';
 
 var map;
 
@@ -35,8 +37,8 @@ function createMarker(latlng, icon) {
     return marker;
 }
 
-function createMarkerImage(src) {
-    return new google.maps.MarkerImage(src);
+function createMarkerImage(src, size, origin, anchor, scaledSize) {
+    return new google.maps.MarkerImage(src, size, origin, anchor, scaledSize);
 }
 
 function centerChanged() {
@@ -49,6 +51,8 @@ function centerChanged() {
 function initGoogleMap() {
     icons.default = createMarkerImage(defaultIcon_src);
     icons.latlon = createMarkerImage(latlonIcon_src);
+    icons.localSearch = createMarkerImage(localSearchIcon_src);
+    icons.geocode = createMarkerImage(geocodeIcon_src);
 
     var latlng;
     if (google.loader.ClientLocation) {
@@ -126,9 +130,94 @@ function initLatlonTool() {
     });
 }
 
+function initLocalSearchTool() {
+    var form = $('#localsearch-tool');
+    var keyword_input = form.find('.keyword');
+
+    var service = new google.maps.places.PlacesService(map);
+
+    function localSearch() {
+        var request = {
+            location: map.getCenter(),
+            rankBy: google.maps.places.RankBy.DISTANCE,
+            keyword: keyword_input.val()
+        };
+        var callback = function(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; ++i) {
+                    var place = results[i];
+                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
+                    //TODO
+                    //place.vicinity // Budapest, Vas Street 2
+                    //place.name
+                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
+                }
+            }
+            else {
+                // TODO update App.mapInfo
+            }
+        };
+        service.search(request, callback);
+    }
+
+    function onKeyUp(e) {
+        if (e.keyCode == '13') {
+            localSearch();
+        }
+    }
+
+    keyword_input.keyup(onKeyUp);
+    
+    var btn_local = form.find('.btn-local');
+    btn_local.bind('click', localSearch);
+}
+
+function initGeocodeTool() {
+    var form = $('#geocode-tool');
+    var address_input = form.find('.address');
+
+    var geocoder = new google.maps.Geocoder();
+
+    function geocode() {
+        var request = {
+            address: address_input.val(),
+            partialmatch: true
+        };
+        var callback = function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                for (var i = 0; i < results.length; ++i) {
+                    var result = results[i];
+                    console.log(result);
+                    //map.panToBounds(result.geometry.bounds);
+                    map.fitBounds(result.geometry.viewport);
+                    map.setCenter(result.geometry.location);
+                    createMarker(result.geometry.location, icons.geocode);
+                    break;
+                }
+            } else {
+                // TODO update App.mapInfo
+            }
+        };
+        geocoder.geocode(request, callback);
+    }
+
+    function onKeyUp(e) {
+        if (e.keyCode == '13') {
+            geocode();
+        }
+    }
+
+    address_input.keyup(onKeyUp);
+    
+    var btn_geocode = form.find('.btn-geocode');
+    btn_geocode.bind('click', geocode);
+}
+
 function initialize() {
     initGoogleMap();
     initLatlonTool();
+    initLocalSearchTool();
+    initGeocodeTool();
 }
 
 // get address from coordinates
@@ -147,47 +236,6 @@ function reverseGeocodeResult(results, status) {
     }
   }
 
-  function geocode() {
-    var address = document.getElementById("address").value;
-    geocoder.geocode({
-      'address': address,
-      'partialmatch': true}, geocodeResult);
-  }
-
-  function geocodeResult(results, status) {
-    if (status == 'OK' && results.length > 0) {
-      map.fitBounds(results[0].geometry.viewport);
-    } else {
-      alert("Geocode was not successful for the following reason: " + status);
-    }
-  }
-
-    if(currentReverseGeocodeResponse) {
-      var addr = '';
-      if(currentReverseGeocodeResponse.size == 0) {
-        addr = 'None';
-      } else {
-        addr = currentReverseGeocodeResponse[0].formatted_address;
-      }
-      text = text + '<br>' + 'address: <br>' + addr;
-    }
-
-    geocoder = new google.maps.Geocoder();
-function codeAddress() {
-        var address = document.getElementById('address').value;
-        geocoder.geocode( { 'address': address}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-          }
-        });
-      }
-   
   // Add dragging event listeners.
   google.maps.event.addListener(marker, 'dragstart', function() {
     updateMarkerAddress('Dragging...');
@@ -204,16 +252,12 @@ function codeAddress() {
   });
 }
 
-// Onload handler to fire off the app.
-google.maps.event.addDomListener(window, 'load', initialize);
-
-
  * 
 */
 
 
 $(document).ready(function() {
-    google.load("maps", "3.x", {other_params: "sensor=false", callback:initialize});
+    google.maps.event.addDomListener(window, 'load', initialize);
 });
 
 // eof

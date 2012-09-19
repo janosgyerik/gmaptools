@@ -5,8 +5,7 @@ current focus
     - draggable markers
     - crosshair on/off
 - mapinfo
-    - add reverse geocode (address from latlon) on dragend
-        - and on Reverse Geocode click in Geocode tool
+    - update address on geocode tool click
 - emphasize the error status on failed local search or geocode
 - marker tool
     - place marker on click

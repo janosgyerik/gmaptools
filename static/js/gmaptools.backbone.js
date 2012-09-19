@@ -19,6 +19,7 @@ $(function() {
                 latitude: this._NA,
                 longitude: this._NA,
                 zoom: this._NA,
+                address: this._NA,
                 sw_latitude: this._NA,
                 sw_longitude: this._NA,
                 ne_latitude: this._NA,

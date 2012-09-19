@@ -17,6 +17,7 @@ var localSearchIcon_src = palette_baseurl + '/yellow-dot.png';
 var geocodeIcon_src = palette_baseurl + '/orange-dot.png';
 
 var map;
+var geocoder;
 
 // preloaded MarkerIcon objects
 var icons = {};
@@ -44,6 +45,27 @@ function createMarkerImage(src, size, origin, anchor, scaledSize) {
 
 function centerChanged() {
     App.mapInfo.update(map);
+}
+
+function addressChanged() {
+    var request = {
+        latLng: map.getCenter()
+    };
+    var callback = function(results, status) {
+        App.mapInfo.set({status: status});
+        if (status == google.maps.GeocoderStatus.OK) {
+            for (var i = 0; i < results.length; ++i) {
+                var result = results[i];
+                console.log(result);
+                App.mapInfo.set({address: result.formatted_address});
+                break;
+            }
+        } else {
+            // TODO replace hardcoded value with object method
+            App.mapInfo.set({address: 'N.A.'});
+        }
+    };
+    geocoder.geocode(request, callback);
 }
 
 function onEnter(func) {
@@ -79,6 +101,9 @@ function initGoogleMap() {
     google.maps.event.addListener(map, 'center_changed', centerChanged);
     google.maps.event.addListener(map, 'zoom_changed', centerChanged);
     centerChanged();
+
+    geocoder = new google.maps.Geocoder();
+    google.maps.event.addListener(map, 'dragend', addressChanged);
 }
 
 function initLatlonTool() {
@@ -169,8 +194,6 @@ function initLocalSearchTool() {
 function initGeocodeTool() {
     var container = $('#geocode-tool');
     var address_input = container.find('.address');
-
-    var geocoder = new google.maps.Geocoder();
 
     function geocode() {
         var request = {

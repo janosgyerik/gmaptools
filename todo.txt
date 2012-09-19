@@ -3,7 +3,7 @@ current focus
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers
-    - crosshair on/off
+    - cleanup
 - mapinfo
     - update address on geocode tool click
 - emphasize the error status on failed local search or geocode

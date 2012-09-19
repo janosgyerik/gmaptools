@@ -83,6 +83,7 @@
                     <li class="active"><a href="#latlon-tool" data-toggle="tab">LatLon</a></li>
                     <li><a href="#localsearch-tool" data-toggle="tab">Local search</a></li>
                     <li><a href="#geocode-tool" data-toggle="tab">Geocode</a></li>
+                    <li><a href="#options-tool" data-toggle="tab">Options</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="latlon-tool">
@@ -105,6 +106,19 @@
                         <form class="form-inline">
                             <input type="text" class="input-small span4 address" placeholder="Address">
                             <a href="#" class="btn btn-geocode"><i class="icon-globe"></i> Geocode</a>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="options-tool">
+                        <form class="form-inline">
+                            <label class="checkbox">
+                                <input type="checkbox" class="show-crosshair"> Show crosshair
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" class="draggable-markers"> Draggable markers
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" class="show-cursor-coordinates"> Show cursor coordinates
+                            </label>
                         </form>
                     </div>
                 </div>
@@ -182,6 +196,7 @@
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/js/underscore-min.js"></script>
     <script src="static/js/backbone-min.js"></script>
+    <script src="static/js/jquery.cookie.js"></script>
     <script src="static/js/gmaptools.backbone.js"></script>
     <script src="static/js/gmaptools.js"></script>
 

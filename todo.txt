@@ -1,6 +1,5 @@
 current focus
 -------------
-- focus control when switching tool
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers
@@ -21,6 +20,8 @@ current focus
 - markers
     - rename Objects tab to Markers
     - powered by backbone collection
+- focus control when switching tool
+    - is it possible to focus on address input when switching to geocode?
 
 
 all features

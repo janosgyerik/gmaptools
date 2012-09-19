@@ -82,9 +82,9 @@ function initGoogleMap() {
 }
 
 function initLatlonTool() {
-    var form = $('#latlon-tool');
-    var lat_input = form.find('.lat');
-    var lon_input = form.find('.lon');
+    var container = $('#latlon-tool');
+    var lat_input = container.find('.lat');
+    var lon_input = container.find('.lon');
 
     function getLatLng() {
         var lat = lat_input.val();
@@ -113,16 +113,16 @@ function initLatlonTool() {
     lat_input.keyup(onEnter(gotoLatLng));
     lon_input.keyup(onEnter(gotoLatLng));
     
-    var btn_goto = form.find('.btn-goto');
+    var btn_goto = container.find('.btn-goto');
     btn_goto.bind('click', gotoLatLng);
 
-    var btn_pin = form.find('.btn-pin');
+    var btn_pin = container.find('.btn-pin');
     btn_pin.bind('click', dropPin);
 
-    var btn_home = form.find('.btn-home');
+    var btn_home = container.find('.btn-home');
     btn_home.bind('click', gotoHome);
 
-    var btn_here = form.find('.btn-here');
+    var btn_here = container.find('.btn-here');
     btn_here.bind('click', function() {
         var point = map.getCenter();
         lat_input.val(point.lat());
@@ -131,8 +131,8 @@ function initLatlonTool() {
 }
 
 function initLocalSearchTool() {
-    var form = $('#localsearch-tool');
-    var keyword_input = form.find('.keyword');
+    var container = $('#localsearch-tool');
+    var keyword_input = container.find('.keyword');
 
     var service = new google.maps.places.PlacesService(map);
 
@@ -162,13 +162,13 @@ function initLocalSearchTool() {
 
     keyword_input.keyup(onEnter(localSearch));
     
-    var btn_local = form.find('.btn-local');
+    var btn_local = container.find('.btn-local');
     btn_local.bind('click', localSearch);
 }
 
 function initGeocodeTool() {
-    var form = $('#geocode-tool');
-    var address_input = form.find('.address');
+    var container = $('#geocode-tool');
+    var address_input = container.find('.address');
 
     var geocoder = new google.maps.Geocoder();
 
@@ -197,7 +197,7 @@ function initGeocodeTool() {
 
     address_input.keyup(onEnter(geocode));
     
-    var btn_geocode = form.find('.btn-geocode');
+    var btn_geocode = container.find('.btn-geocode');
     btn_geocode.bind('click', geocode);
 }
 

@@ -1,11 +1,18 @@
-current focus
--------------
+cleaning up
+-----------
+- no variables in global scope
+- markers
+    - powered by backbone collection
+- mapinfo
+    - update address on geocode tool click
+
+
+next
+----
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers
     - cleanup
-- mapinfo
-    - update address on geocode tool click
 - emphasize the error status on failed local search or geocode
 - marker tool
     - place marker on click
@@ -16,9 +23,6 @@ current focus
 - geocode
     - clear all geocode results
     - clear selected query results
-- markers
-    - rename Objects tab to Markers
-    - powered by backbone collection
 - focus control when switching tool
     - is it possible to focus on address input when switching to geocode?
 

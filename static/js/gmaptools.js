@@ -46,6 +46,14 @@ function centerChanged() {
     App.mapInfo.update(map);
 }
 
+function onEnter(func) {
+    return function(e) {
+        if (e.keyCode == '13') {
+            func();
+        }
+    }
+}
+
 function initGoogleMap() {
     icons.default = createMarkerImage(defaultIcon_src);
     icons.latlon = createMarkerImage(latlonIcon_src);
@@ -102,14 +110,8 @@ function initLatlonTool() {
         }
     }
 
-    function onKeyUp(e) {
-        if (e.keyCode == '13') {
-            gotoLatLng();
-        }
-    }
-
-    lat_input.keyup(onKeyUp);
-    lon_input.keyup(onKeyUp);
+    lat_input.keyup(onEnter(gotoLatLng));
+    lon_input.keyup(onEnter(gotoLatLng));
     
     var btn_goto = form.find('.btn-goto');
     btn_goto.bind('click', gotoLatLng);
@@ -158,13 +160,7 @@ function initLocalSearchTool() {
         service.search(request, callback);
     }
 
-    function onKeyUp(e) {
-        if (e.keyCode == '13') {
-            localSearch();
-        }
-    }
-
-    keyword_input.keyup(onKeyUp);
+    keyword_input.keyup(onEnter(localSearch));
     
     var btn_local = form.find('.btn-local');
     btn_local.bind('click', localSearch);
@@ -199,13 +195,7 @@ function initGeocodeTool() {
         geocoder.geocode(request, callback);
     }
 
-    function onKeyUp(e) {
-        if (e.keyCode == '13') {
-            geocode();
-        }
-    }
-
-    address_input.keyup(onKeyUp);
+    address_input.keyup(onEnter(geocode));
     
     var btn_geocode = form.find('.btn-geocode');
     btn_geocode.bind('click', geocode);

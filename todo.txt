@@ -12,7 +12,7 @@ current focus
 - mapinfo
     - add reverse geocode (address from latlon) on dragend
         - and on Reverse Geocode click in Geocode tool
-    - add status
+- focus control when switching tool
 
 
 all features

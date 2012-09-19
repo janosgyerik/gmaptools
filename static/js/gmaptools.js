@@ -44,9 +44,6 @@ function createMarkerImage(src, size, origin, anchor, scaledSize) {
 
 function centerChanged() {
     App.mapInfo.update(map);
-    //map.panTo(latlng);
-    //map.panToBounds(bounds);
-    //map.fitBounds(bounds);
 }
 
 function initGoogleMap() {
@@ -148,14 +145,14 @@ function initLocalSearchTool() {
                 for (var i = 0; i < results.length; ++i) {
                     var place = results[i];
                     createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
-                    //TODO
+                    //Extra info:
                     //place.vicinity // Budapest, Vas Street 2
                     //place.name
                     //place.types // ['cafe', 'restaurant', 'food', 'establishment']
                 }
             }
             else {
-                // TODO update App.mapInfo
+                App.mapInfo.set({status: status});
             }
         };
         service.search(request, callback);
@@ -196,7 +193,7 @@ function initGeocodeTool() {
                     break;
                 }
             } else {
-                // TODO update App.mapInfo
+                App.mapInfo.set({status: status});
             }
         };
         geocoder.geocode(request, callback);

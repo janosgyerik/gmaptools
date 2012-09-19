@@ -15,6 +15,7 @@ $(function() {
 
         initialize: function() {
             this.set({
+                status: this._NA,
                 latitude: this._NA,
                 longitude: this._NA,
                 zoom: this._NA,

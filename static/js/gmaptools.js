@@ -143,6 +143,7 @@ function initLocalSearchTool() {
             keyword: keyword_input.val()
         };
         var callback = function(results, status) {
+            App.mapInfo.set({status: status});
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 for (var i = 0; i < results.length; ++i) {
                     var place = results[i];
@@ -154,7 +155,6 @@ function initLocalSearchTool() {
                 }
             }
             else {
-                App.mapInfo.set({status: status});
             }
         };
         service.search(request, callback);
@@ -178,6 +178,7 @@ function initGeocodeTool() {
             partialmatch: true
         };
         var callback = function(results, status) {
+            App.mapInfo.set({status: status});
             if (status == google.maps.GeocoderStatus.OK) {
                 for (var i = 0; i < results.length; ++i) {
                     var result = results[i];
@@ -189,7 +190,6 @@ function initGeocodeTool() {
                     break;
                 }
             } else {
-                App.mapInfo.set({status: status});
             }
         };
         geocoder.geocode(request, callback);

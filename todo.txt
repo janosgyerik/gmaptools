@@ -1,10 +1,6 @@
 current focus
 -------------
-- add search tool
-    - append -> different color pins
-- marker tool
-    - place marker on click
-    - edit marker icon
+- focus control when switching tool
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers
@@ -12,7 +8,19 @@ current focus
 - mapinfo
     - add reverse geocode (address from latlon) on dragend
         - and on Reverse Geocode click in Geocode tool
-- focus control when switching tool
+- emphasize the error status on failed local search or geocode
+- marker tool
+    - place marker on click
+    - edit marker icon
+- local search
+    - clear all local search results
+    - clear selected query results
+- geocode
+    - clear all geocode results
+    - clear selected query results
+- markers
+    - rename Objects tab to Markers
+    - powered by backbone collection
 
 
 all features

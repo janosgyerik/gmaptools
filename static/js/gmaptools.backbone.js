@@ -9,85 +9,82 @@
  */
 
 
-$(function() {
-    var MapInfo = Backbone.Model.extend({
-        _NA: 'N.A.',
+window.App = {};
 
-        initialize: function() {
-            this.set({
-                status: this._NA,
-                latitude: this._NA,
-                longitude: this._NA,
-                zoom: this._NA,
-                address: this._NA,
-                sw_latitude: this._NA,
-                sw_longitude: this._NA,
-                ne_latitude: this._NA,
-                ne_longitude: this._NA
-            });
-        },
+App.MapInfo = Backbone.Model.extend({
+    _NA: 'N.A.',
 
-        update: function(map) {
-            var param = {};
-            var center = map.getCenter();
-            if (center != null) {
-                param.latitude = center.lat();
-                param.longitude = center.lng();
-            }
-            param.zoom = map.getZoom();
-            var bounds = map.getBounds();
-            if (bounds != null) {
-                var sw = bounds.getSouthWest();
-                var ne = bounds.getNorthEast();
-                param.sw_latitude = sw.lat();
-                param.sw_longitude = sw.lng();
-                param.ne_latitude = ne.lat();
-                param.ne_longitude = ne.lng();
-            }
-            this.set(param);
+    initialize: function() {
+        this.set({
+            status: this._NA,
+            latitude: this._NA,
+            longitude: this._NA,
+            zoom: this._NA,
+            address: this._NA,
+            sw_latitude: this._NA,
+            sw_longitude: this._NA,
+            ne_latitude: this._NA,
+            ne_longitude: this._NA
+        });
+    },
+
+    update: function(map) {
+        var param = {};
+        var center = map.getCenter();
+        if (center != null) {
+            param.latitude = center.lat();
+            param.longitude = center.lng();
         }
-    });
-
-    var MapInfoDetails = Backbone.View.extend({
-        initialize: function() {
-            this.model.on('change', this.render, this);
-        },
-
-        template: _.template($('#mapinfo-details-template').html()),
-
-        render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-            return this;
+        param.zoom = map.getZoom();
+        var bounds = map.getBounds();
+        if (bounds != null) {
+            var sw = bounds.getSouthWest();
+            var ne = bounds.getNorthEast();
+            param.sw_latitude = sw.lat();
+            param.sw_longitude = sw.lng();
+            param.ne_latitude = ne.lat();
+            param.ne_longitude = ne.lng();
         }
-    });
+        this.set(param);
+    }
+});
 
-    var MapInfoQuickView = Backbone.View.extend({
-        initialize: function() {
-            this.model.on('change', this.render, this);
-        },
+App.MapInfoDetails = Backbone.View.extend({
+    initialize: function() {
+        this.model.on('change', this.render, this);
+    },
 
-        template: _.template($('#mapinfo-quickview-template').html()),
+    template: _.template($('#mapinfo-details-template').html()),
 
-        render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-            return this;
-        }
-    });
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+});
 
-    window.App = {
-    };
+App.MapInfoQuickView = Backbone.View.extend({
+    initialize: function() {
+        this.model.on('change', this.render, this);
+    },
 
-    var mapInfo = App.mapInfo = new MapInfo;
+    template: _.template($('#mapinfo-quickview-template').html()),
 
-    App.detailedstats = new MapInfoDetails({
-        el: $('#mapinfo-details'),
-        model: mapInfo
-    });
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+});
 
-    App.quickstats = new MapInfoQuickView({
-        el: $('#mapinfo-quickview'),
-        model: mapInfo
-    });
+App.mapInfo = new App.MapInfo;
+
+App.detailedstats = new App.MapInfoDetails({
+    el: $('#mapinfo-details'),
+    model: App.mapInfo
+});
+
+App.quickstats = new App.MapInfoQuickView({
+    el: $('#mapinfo-quickview'),
+    model: App.mapInfo
 });
 
 // eof

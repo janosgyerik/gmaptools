@@ -56,7 +56,6 @@ function addressChanged() {
         if (status == google.maps.GeocoderStatus.OK) {
             for (var i = 0; i < results.length; ++i) {
                 var result = results[i];
-                console.log(result);
                 App.mapInfo.set({address: result.formatted_address});
                 break;
             }
@@ -221,7 +220,7 @@ function initGeocodeTool() {
             if (status == google.maps.GeocoderStatus.OK) {
                 for (var i = 0; i < results.length; ++i) {
                     var result = results[i];
-                    console.log(result);
+                    App.mapInfo.set({address: result.formatted_address});
                     //map.panToBounds(result.geometry.bounds);
                     map.fitBounds(result.geometry.viewport);
                     map.setCenter(result.geometry.location);

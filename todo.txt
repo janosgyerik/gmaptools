@@ -3,12 +3,11 @@ cleaning up
 - no variables in global scope
 - markers
     - powered by backbone collection
-- mapinfo
-    - update address on geocode tool click
 
 
 next
 ----
+- add an info button on each tool to give basic explanation
 - options tab
     - option to show coordinates on mouse hover
     - draggable markers

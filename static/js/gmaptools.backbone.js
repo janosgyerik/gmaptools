@@ -49,6 +49,10 @@ $(function() {
     });
 
     var MapInfoDetails = Backbone.View.extend({
+        initialize: function() {
+            this.model.on('change', this.render, this);
+        },
+
         template: _.template($('#mapinfo-details-template').html()),
 
         render: function() {
@@ -58,6 +62,10 @@ $(function() {
     });
 
     var MapInfoQuickView = Backbone.View.extend({
+        initialize: function() {
+            this.model.on('change', this.render, this);
+        },
+
         template: _.template($('#mapinfo-quickview-template').html()),
 
         render: function() {
@@ -79,11 +87,6 @@ $(function() {
     App.quickstats = new MapInfoQuickView({
         el: $('#mapinfo-quickview'),
         model: mapInfo
-    });
-
-    mapInfo.on('change', function() {
-        App.detailedstats.render();
-        App.quickstats.render();
     });
 });
 

@@ -1,5 +1,7 @@
 cleaning up
 -----------
+- avoid this: $("a.photo").click(function() { ... });
+    -> consider making a new view class
 - no variables in global scope
     - maybe, use events to tie together the map operations
         - MapInfo wants to listen to various map events

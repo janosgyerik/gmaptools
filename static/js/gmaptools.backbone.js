@@ -9,23 +9,23 @@
  */
 
 
+// the basic namespace
+// TODO: put in app.js
 window.App = {};
 
+// classes
+// TODO: put in app/*.js
 App.MapInfo = Backbone.Model.extend({
-    _NA: 'N.A.',
-
-    initialize: function() {
-        this.set({
-            status: this._NA,
-            latitude: this._NA,
-            longitude: this._NA,
-            zoom: this._NA,
-            address: this._NA,
-            sw_latitude: this._NA,
-            sw_longitude: this._NA,
-            ne_latitude: this._NA,
-            ne_longitude: this._NA
-        });
+    defaults: {
+        status: 'N.A.',
+        latitude: 'N.A.',
+        longitude: 'N.A.',
+        zoom: 'N.A.',
+        address: 'N.A.',
+        sw_latitude: 'N.A.',
+        sw_longitude: 'N.A.',
+        ne_latitude: 'N.A.',
+        ne_longitude: 'N.A.'
     },
 
     update: function(map) {
@@ -46,6 +46,10 @@ App.MapInfo = Backbone.Model.extend({
             param.ne_longitude = ne.lng();
         }
         this.set(param);
+    },
+
+    clearAddress: function() {
+        this.set({address: this.defaults.address});
     }
 });
 
@@ -75,6 +79,8 @@ App.MapInfoQuickView = Backbone.View.extend({
     }
 });
 
+// instances
+// TODO: put in setup.js
 App.mapInfo = new App.MapInfo;
 
 App.detailedstats = new App.MapInfoDetails({
@@ -86,5 +92,10 @@ App.quickstats = new App.MapInfoQuickView({
     el: $('#mapinfo-quickview'),
     model: App.mapInfo
 });
+
+//App.router = new App.Router;
+
+// initialize the Backbone router
+//Backbone.history.start();
 
 // eof

@@ -60,8 +60,7 @@ function addressChanged() {
                 break;
             }
         } else {
-            // TODO replace hardcoded value with object method
-            App.mapInfo.set({address: 'N.A.'});
+            App.mapInfo.clearAddress();
         }
     };
     geocoder.geocode(request, callback);

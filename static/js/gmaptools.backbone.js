@@ -13,6 +13,8 @@
 // TODO: put in app.js
 window.App = {};
 
+_.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
+
 // classes
 // TODO: put in app/*.js
 App.MapInfo = Backbone.Model.extend({

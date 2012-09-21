@@ -155,23 +155,23 @@
     <div class="view">
         <dl>
             <dt>Status:</dt>
-            <dd><%= status %></dd>
+            <dd>{{ status }}</dd>
             <dt>Latitude:</dt>
-            <dd><%= latitude %></dd>
+            <dd>{{ latitude }}</dd>
             <dt>Longitude:</dt>
-            <dd><%= longitude %></dd>
+            <dd>{{ longitude }}</dd>
             <dt>Zoom:</dt>
-            <dd><%= zoom %></dd>
+            <dd>{{ zoom }}</dd>
             <dt>Address:</dt>
-            <dd><%= address %></dd>
+            <dd>{{ address }}</dd>
             <dt>South-West Latitude:</dt>
-            <dd><%= sw_latitude %></dd>
+            <dd>{{ sw_latitude }}</dd>
             <dt>South-West Longitude:</dt>
-            <dd><%= sw_longitude %></dd>
+            <dd>{{ sw_longitude }}</dd>
             <dt>North-East Latitude:</dt>
-            <dd><%= ne_latitude %></dd>
+            <dd>{{ ne_latitude }}</dd>
             <dt>North-East Longitude:</dt>
-            <dd><%= ne_longitude %></dd>
+            <dd>{{ ne_longitude }}</dd>
         </dl>
     </div>
 </script>
@@ -180,12 +180,12 @@
 <script type="text/template" id="mapinfo-quickview-template">
     <div class="view mapinfo-quickview">
         <div>
-            zoom=<%= zoom %>
-            center=@(<%= latitude %>, <%= longitude %>)
+            zoom={{ zoom }}
+            center=@({{ latitude }}, {{ longitude }})
         </div>
         <div>
-            sw=@(<%= sw_latitude %>, <%= sw_longitude %>)
-            ne=@(<%= ne_latitude %>, <%= ne_longitude %>)
+            sw=@({{ sw_latitude }}, {{ sw_longitude }})
+            ne=@({{ ne_latitude }}, {{ ne_longitude }})
         </div>
     </div>
 </script>

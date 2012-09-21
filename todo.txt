@@ -8,7 +8,6 @@ cleaning up
             - center changed
             - address changed
             - ... etc
-- make Latlon.Home work even if ClientLocation is not available (LAN)
 - markers
     - powered by backbone collection
 - use history api to make the tool tabs selectable

@@ -90,6 +90,9 @@ function clearCookie(name) {
     setCookie(name, '');
 }
 
+// TODO this should not be in global scope
+var home_latlng;
+
 function initGoogleMap() {
     icons.default = createMarkerImage(defaultIcon_src);
     icons.latlon = createMarkerImage(latlonIcon_src);
@@ -103,8 +106,10 @@ function initGoogleMap() {
         latlng = new google.maps.LatLng(lat, lng);
     }
     else {
-        latlng = new google.maps.LatLng(32.5468, -23.2031);
+        latlng = new google.maps.LatLng(35.68112175616982, 139.76703710980564);
     }
+    home_latlng = latlng;
+
     var options = {
         zoom: 14,
         center: latlng,
@@ -146,6 +151,9 @@ function initLatlonTool() {
             var lat = google.loader.ClientLocation.latitude;
             var lon = google.loader.ClientLocation.longitude;
             map.panTo(createLatLng(lat, lon));
+        }
+        else {
+            map.panTo(home_latlng);
         }
     }
 

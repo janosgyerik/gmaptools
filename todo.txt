@@ -1,42 +1,46 @@
-cleaning up
------------
+cleaning up using backbone
+--------------------------
+- migrate all tools to backbone
 - more backbone classes
-    - LocationFactory
-    - MarkerFactory
     - LocalSearchResults
-- use history api to make the tool tabs selectable
-    - using backbone routers
-    - be sure to call Backbone.history.start() after routers are setup
+- backbone router for tool activation
+- backbone router for tool actions
 - trigger address update on latlon change too
-
-
-next
-----
-- add an info button on each tool to give basic explanation
-- options tab
-    - show coordinates of cursor
-    - draggable markers
-    - cleanup
-- emphasize the error status on failed local search or geocode
-- marker tool
-    - place marker on click
-    - edit marker icon
-- local search
-    - clear all local search results
-    - clear selected query results
-- geocode
-    - clear all geocode results
-    - clear selected query results
 - focus control when switching tool
     - is it possible to focus on address input when switching to geocode?
+    -> use the activate method, with parameter to focus
+
+
+polish basic tools
+------------------
+- show error with bootstrap if google map is not available
+- show the error status with bootstrap on failed local search or geocode
+- add detailed info for local search and geocode results
+? add an info button on each tool to give basic explanation
+- add clear map / reset page button
+- local search
+    - clear all local search results
+- geocode
+    - clear all geocode results
+
+
+spreadsheet tools
+-----------------
+- place markers for coordinates from google spreadsheet
+    - http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html
+- place markers for addresses from google spreadsheet
 
 
 all pending features
 --------------------
+- marker tool
+    - place marker on click
+    - edit marker icon
+- options tab
+    - show coordinates of cursor
+    - draggable markers
+    - cleanup
 / mark point by coordinates -> yellow
-/ place markers for coordinates from google spreadsheet
-    - http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html
-/ place markers for addresses from google spreadsheet
 / select bounding box by drag and drop markers
 / measure distance
 / clear markers

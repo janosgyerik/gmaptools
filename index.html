@@ -56,7 +56,7 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row-fluid">
+      <div class="row-fluid" id="main-content">
         <div class="span3">
           <div class="tabbable">
             <ul class="nav nav-tabs">
@@ -188,6 +188,15 @@
             ne=@({{ ne_latitude }}, {{ ne_longitude }})
         </div>
     </div>
+</script>
+
+<script type="text/template" id="offline-template">
+      <div class="hero-unit">
+        <div class="alert alert-block alert-error">
+            <h2>Error: Google Maps is not available</h2>
+            <p>This tool doesn't work without Google Maps. (Are you connected to internet?) If you are connected to internet but you are seeing this message, then you might want to contact the site author about the problem. (See the email address in the header part of the html source.)</p>
+        </div>
+      </div><!--/hero-->
 </script>
 
     <!-- Le javascript

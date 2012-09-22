@@ -280,28 +280,39 @@ App.LocalSearchTool = App.Tool.extend({
     }
 });
 
-// instances
-// TODO: put in setup.js
-App.mapController = new App.MapController;
-App.latlonTool = new App.LatlonTool({map: App.mapController});
-App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
+App.OfflineView = Backbone.View.extend({
+    el: $('#main-content'),
 
-App.detailedstats = new App.MapInfoDetails({
-    el: $('#mapinfo-details'),
-    model: App.mapController
+    template: _.template($('#offline-template').html()),
+
+    render: function() {
+        this.$el.html(this.template());
+        return this;
+    }
 });
-
-App.quickstats = new App.MapInfoQuickView({
-    el: $('#mapinfo-quickview'),
-    model: App.mapController
-});
-
-//App.router = new App.Router;
-
-// initialize the Backbone router
-//Backbone.history.start();
 
 function onGoogleMapsReady() {
+    // instances
+    // TODO: put in setup.js
+    App.mapController = new App.MapController;
+    App.latlonTool = new App.LatlonTool({map: App.mapController});
+    App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
+
+    App.detailedstats = new App.MapInfoDetails({
+        el: $('#mapinfo-details'),
+        model: App.mapController
+    });
+
+    App.quickstats = new App.MapInfoQuickView({
+        el: $('#mapinfo-quickview'),
+        model: App.mapController
+    });
+
+    //App.router = new App.Router;
+
+    // initialize the Backbone router
+    //Backbone.history.start();
+
     // debugging
     //App.latlonTool.activate();
     //App.latlonTool.getCurrentLatLon();
@@ -319,9 +330,17 @@ function onGoogleMapsReady() {
     App.mapController.trigger('change');
 }
 
+function offlineMode() {
+    var offlineView = new App.OfflineView;
+    offlineView.render();
+}
+
 $(function() {
     if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.event !== 'undefined') {
         google.maps.event.addDomListener(window, 'load', onGoogleMapsReady);
+    }
+    else {
+        offlineMode();
     }
 });
 

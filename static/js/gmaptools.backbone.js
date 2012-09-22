@@ -111,8 +111,35 @@ App.MapController = Backbone.Model.extend({
         }
     }
 });
+/*
+    var service = new google.maps.places.PlacesService(map);
 
-App.MapTool = Backbone.View.extend({
+    function localSearch() {
+        var request = {
+            location: map.getCenter(),
+            rankBy: google.maps.places.RankBy.DISTANCE,
+            keyword: keyword_input.val()
+        };
+        var callback = function(results, status) {
+            App.mapInfo.set({status: status});
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; ++i) {
+                    var place = results[i];
+                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
+                    //Extra info:
+                    //place.vicinity // Budapest, Vas Street 2
+                    //place.name
+                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
+                }
+            }
+            else {
+            }
+        };
+        service.search(request, callback);
+    }
+ * */
+
+App.Tool = Backbone.View.extend({
     activate: function() {
         var id = this.$el.attr('id');
         var anchor = $('a[href=#' + id + ']');
@@ -120,7 +147,7 @@ App.MapTool = Backbone.View.extend({
     }
 });
 
-App.LatlonTool = App.MapTool.extend({
+App.LatlonTool = App.Tool.extend({
     el: $('#latlon-tool'),
     initialize: function(options) {
         this.lat = this.$('.lat');
@@ -167,7 +194,7 @@ App.LatlonTool = App.MapTool.extend({
     }
 });
 
-App.LocalSearchTool = App.MapTool.extend({
+App.LocalSearchTool = App.Tool.extend({
     el: $('#localsearch-tool'),
     initialize: function(options) {
         this.keyword = this.$('.keyword');
@@ -187,36 +214,6 @@ App.LocalSearchTool = App.MapTool.extend({
         if (e.keyCode == '13') this.localSearch();
     }
 });
-/*
-function initLocalSearchTool() {
-    var service = new google.maps.places.PlacesService(map);
-
-    function localSearch() {
-        var request = {
-            location: map.getCenter(),
-            rankBy: google.maps.places.RankBy.DISTANCE,
-            keyword: keyword_input.val()
-        };
-        var callback = function(results, status) {
-            App.mapInfo.set({status: status});
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                for (var i = 0; i < results.length; ++i) {
-                    var place = results[i];
-                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
-                    //Extra info:
-                    //place.vicinity // Budapest, Vas Street 2
-                    //place.name
-                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
-                }
-            }
-            else {
-            }
-        };
-        service.search(request, callback);
-    }
-}
-
- * */
 
 // instances
 // TODO: put in setup.js
@@ -235,11 +232,13 @@ App.quickstats = new App.MapInfoQuickView({
 App.mapController = new App.MapController;
 App.latlonTool = new App.LatlonTool({map: App.mapController});
 App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
-App.localSearchTool.activate();
 
 //App.router = new App.Router;
 
 // initialize the Backbone router
 //Backbone.history.start();
+
+// debugging
+App.localSearchTool.activate();
 
 // eof

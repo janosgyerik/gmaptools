@@ -165,6 +165,14 @@ App.MapController = Backbone.Model.extend({
         // event handlers for local search tool
         this.on('localSearch', this.localSearch, this);
     },
+
+    centerChanged: function() {
+    },
+    zoomChanged: function() {
+    },
+    dragend: function() {
+    },
+
     getCurrentLatLon: function(callback) {
         callback(this.get('lat'), this.get('lon'));
     },
@@ -310,9 +318,9 @@ function onGoogleMapsReady() {
     // debugging
     //App.latlonTool.activate();
     //App.latlonTool.getCurrentLatLon();
-    App.latlonTool.lat.val(2);
-    App.latlonTool.lon.val(3);
-    App.latlonTool.gotoLatLon();
+    //App.latlonTool.lat.val(2);
+    //App.latlonTool.lon.val(3);
+    //App.latlonTool.gotoLatLon();
     //App.latlonTool.dropPin();
     //App.latlonTool.gotoHome();
 

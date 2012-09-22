@@ -157,9 +157,9 @@
             <dt>Status:</dt>
             <dd>{{ status }}</dd>
             <dt>Latitude:</dt>
-            <dd>{{ latitude }}</dd>
+            <dd>{{ lat }}</dd>
             <dt>Longitude:</dt>
-            <dd>{{ longitude }}</dd>
+            <dd>{{ lon }}</dd>
             <dt>Zoom:</dt>
             <dd>{{ zoom }}</dd>
             <dt>Address:</dt>
@@ -181,7 +181,7 @@
     <div class="view mapinfo-quickview">
         <div>
             zoom={{ zoom }}
-            center=@({{ latitude }}, {{ longitude }})
+            center=@({{ lat }}, {{ lon }})
         </div>
         <div>
             sw=@({{ sw_latitude }}, {{ sw_longitude }})

@@ -1,10 +1,9 @@
 cleaning up
 -----------
-- avoid this: $("a.photo").click(function() { ... });
-    -> consider making a new view class
-- LocationFactory
-- MarkerFactory
-    - powered by backbone collection
+- more backbone classes
+    - LocationFactory
+    - MarkerFactory
+    - LocalSearchResults
 - use history api to make the tool tabs selectable
     - using backbone routers
     - be sure to call Backbone.history.start() after routers are setup

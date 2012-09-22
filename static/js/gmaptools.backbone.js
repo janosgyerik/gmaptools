@@ -81,17 +81,89 @@ App.MapInfoQuickView = Backbone.View.extend({
     }
 });
 
+App.LocationFactory = Backbone.Collection.extend({
+    getLocation: function(lat, lon) {
+        return new google.maps.LatLng(lat, lon);
+    }
+});
+
+App.MarkerFactory = Backbone.Collection.extend({
+    initialize: function(map) {
+        this.map = map;
+    },
+    getMarker: function(pos, icon) {
+        var marker = new google.maps.Marker({
+            position: pos,
+            map: this.map,
+            title: pos.toString(),
+            icon: icon
+        });
+        //markers.push(marker);
+        return marker;
+    }
+});
+
+App.MarkerImageFactory = Backbone.Collection.extend({
+    getMarkerImage: function(src, options) {
+        if (options.size) {
+            return new google.maps.MarkerImage(src, null, null, null, new google.maps.Size(options.size, options.size));
+        }
+        else {
+            return new google.maps.MarkerImage(src);
+        }
+    }
+});
+
 App.MapController = Backbone.Model.extend({
     defaults: {
+        status: 'N.A.',
         lat: 35.68112175616982,
         lon: 139.76703710980564,
-        zoom: 14
+        zoom: 14,
+        address: 'N.A.',
+        sw_latitude: 'N.A.',
+        sw_longitude: 'N.A.',
+        ne_latitude: 'N.A.',
+        ne_longitude: 'N.A.'
     },
     initialize: function() {
+        // initialize helper factory objects
+        this.locationFactory = new App.LocationFactory;
+        this.markerImageFactory = new App.MarkerImageFactory;
+
+        // initialize google map objects
+        if (google.loader.ClientLocation) {
+            var lat = google.loader.ClientLocation.latitude;
+            var lon = google.loader.ClientLocation.longitude;
+            this.defaults.lat = lat;
+            this.defaults.lon = lon;
+            this.set({lat: lat, lon: lon});
+        }
+        var center = this.locationFactory.getLocation(this.get('lat'), this.get('lon'));
+        var options = {
+            zoom: this.get('zoom'),
+            center: center,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        this.map = new google.maps.Map(document.getElementById('map_canvas'), options);
+        this.placesService = new google.maps.places.PlacesService(this.map);
+        this.geocoder = new google.maps.Geocoder();
+        this.markerFactory = new App.MarkerFactory(this.map);
+
+        // google maps event handlers
+        google.maps.event.addListener(this.map, 'center_changed', this.centerChanged);
+        google.maps.event.addListener(this.map, 'zoom_changed', this.zoomChanged);
+        google.maps.event.addListener(this.map, 'dragend', this.dragend);
+
+
+        // event handlers for latlon tool
         this.on('getCurrentLatLon', this.getCurrentLatLon, this);
         this.on('gotoHome', this.gotoHome, this);
         this.on('gotoLatLon', this.gotoLatLon, this);
         this.on('dropPin', this.dropPin, this);
+
+        // event handlers for local search tool
+        this.on('localSearch', this.localSearch, this);
     },
     getCurrentLatLon: function(callback) {
         callback(this.get('lat'), this.get('lon'));
@@ -101,31 +173,26 @@ App.MapController = Backbone.Model.extend({
     },
     gotoLatLon: function(lat, lon) {
         this.set({lat: lat, lon: lon});
-        if (this.map) {
-            this.map.panTo(this.locationFactory.getLocation(lat, lon));
-        }
+        this.map.panTo(this.locationFactory.getLocation(lat, lon));
     },
     dropPin: function(lat, lon) {
-        if (this.map) {
-            this.markerFactory.addMarker(this.locationFactory.getLocation(lat, lon), {type: 'latlon'});
-        }
-    }
-});
-/*
-    var service = new google.maps.places.PlacesService(map);
-
-    function localSearch() {
+         this.markerFactory.addMarker(this.locationFactory.getLocation(lat, lon), {type: 'latlon'});
+    },
+    localSearch: function(keyword) {
         var request = {
-            location: map.getCenter(),
+            location: this.map.getCenter(),
             rankBy: google.maps.places.RankBy.DISTANCE,
-            keyword: keyword_input.val()
+            keyword: keyword
         };
+        var _self = this; // saving 'this' pointer
         var callback = function(results, status) {
-            App.mapInfo.set({status: status});
+            _self.set({status: status});
             if (status == google.maps.places.PlacesServiceStatus.OK) {
+                // this.errors.hide();
                 for (var i = 0; i < results.length; ++i) {
                     var place = results[i];
-                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
+                    var markerImage = _self.markerImageFactory.getMarkerImage(place.icon, {size: 25});
+                    _self.markerFactory.getMarker(place.geometry.location, markerImage);
                     //Extra info:
                     //place.vicinity // Budapest, Vas Street 2
                     //place.name
@@ -133,11 +200,14 @@ App.MapController = Backbone.Model.extend({
                 }
             }
             else {
+                // this.errors.clear();
+                // this.errors.append('Local search failed');
+                // this.errors.show();
             }
         };
-        service.search(request, callback);
+        this.placesService.search(request, callback);
     }
- * */
+});
 
 App.Tool = Backbone.View.extend({
     activate: function() {
@@ -217,28 +287,44 @@ App.LocalSearchTool = App.Tool.extend({
 
 // instances
 // TODO: put in setup.js
-App.mapInfo = new App.MapInfo;
+App.mapController = new App.MapController;
+App.latlonTool = new App.LatlonTool({map: App.mapController});
+App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
 
 App.detailedstats = new App.MapInfoDetails({
     el: $('#mapinfo-details'),
-    model: App.mapInfo
+    model: App.mapController
 });
 
 App.quickstats = new App.MapInfoQuickView({
     el: $('#mapinfo-quickview'),
-    model: App.mapInfo
+    model: App.mapController
 });
-
-App.mapController = new App.MapController;
-App.latlonTool = new App.LatlonTool({map: App.mapController});
-App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
 
 //App.router = new App.Router;
 
 // initialize the Backbone router
 //Backbone.history.start();
 
-// debugging
-App.localSearchTool.activate();
+function onGoogleMapsReady() {
+    // debugging
+    //App.latlonTool.activate();
+    //App.latlonTool.getCurrentLatLon();
+    App.latlonTool.lat.val(2);
+    App.latlonTool.lon.val(3);
+    App.latlonTool.gotoLatLon();
+    //App.latlonTool.dropPin();
+    //App.latlonTool.gotoHome();
+
+    //App.localSearchTool.activate();
+    //App.localSearchTool.keyword.val('pizza');
+    //App.localSearchTool.localSearch();
+}
+
+$(function() {
+    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.event !== 'undefined') {
+        google.maps.event.addDomListener(window, 'load', onGoogleMapsReady);
+    }
+});
 
 // eof

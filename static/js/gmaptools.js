@@ -90,73 +90,6 @@ function clearCookie(name) {
     setCookie(name, '');
 }
 
-function initGoogleMap() {
-    icons.default = createMarkerImage(defaultIcon_src);
-    icons.latlon = createMarkerImage(latlonIcon_src);
-    icons.localSearch = createMarkerImage(localSearchIcon_src);
-    icons.geocode = createMarkerImage(geocodeIcon_src);
-
-    var latlng;
-    if (google.loader.ClientLocation) {
-        var lat = google.loader.ClientLocation.latitude;
-        var lng = google.loader.ClientLocation.longitude;
-        latlng = new google.maps.LatLng(lat, lng);
-    }
-    else {
-        latlng = new google.maps.LatLng(35.68112175616982, 139.76703710980564);
-    }
-
-    var options = {
-        zoom: 14,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById('map_canvas'), options);
-
-    google.maps.event.addListener(map, 'center_changed', centerChanged);
-    google.maps.event.addListener(map, 'zoom_changed', centerChanged);
-    centerChanged();
-
-    geocoder = new google.maps.Geocoder();
-    google.maps.event.addListener(map, 'dragend', addressChanged);
-}
-
-function initLocalSearchTool() {
-    var container = $('#localsearch-tool');
-    var keyword_input = container.find('.keyword');
-
-    var service = new google.maps.places.PlacesService(map);
-
-    function localSearch() {
-        var request = {
-            location: map.getCenter(),
-            rankBy: google.maps.places.RankBy.DISTANCE,
-            keyword: keyword_input.val()
-        };
-        var callback = function(results, status) {
-            App.mapInfo.set({status: status});
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                for (var i = 0; i < results.length; ++i) {
-                    var place = results[i];
-                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
-                    //Extra info:
-                    //place.vicinity // Budapest, Vas Street 2
-                    //place.name
-                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
-                }
-            }
-            else {
-            }
-        };
-        service.search(request, callback);
-    }
-
-    keyword_input.keyup(onEnter(localSearch));
-    
-    var btn_local = container.find('.btn-local');
-    btn_local.bind('click', localSearch);
-}
-
 function initGeocodeTool() {
     var container = $('#geocode-tool');
     var address_input = container.find('.address');
@@ -250,19 +183,5 @@ function initOptionsTool() {
     });
     setShowCursorCoordinates(option_show_cursor_coordinates);
 }
-
-function initialize() {
-    initGoogleMap();
-    initLocalSearchTool();
-    initGeocodeTool();
-    initOptionsTool();
-}
-
-
-$(document).ready(function() {
-    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.event !== 'undefined') {
-        google.maps.event.addDomListener(window, 'load', initialize);
-    }
-});
 
 // eof

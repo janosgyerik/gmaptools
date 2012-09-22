@@ -90,9 +90,6 @@ function clearCookie(name) {
     setCookie(name, '');
 }
 
-// TODO this should not be in global scope
-var home_latlng;
-
 function initGoogleMap() {
     icons.default = createMarkerImage(defaultIcon_src);
     icons.latlon = createMarkerImage(latlonIcon_src);
@@ -108,7 +105,6 @@ function initGoogleMap() {
     else {
         latlng = new google.maps.LatLng(35.68112175616982, 139.76703710980564);
     }
-    home_latlng = latlng;
 
     var options = {
         zoom: 14,
@@ -257,50 +253,16 @@ function initOptionsTool() {
 
 function initialize() {
     initGoogleMap();
-    initLatlonTool();
     initLocalSearchTool();
     initGeocodeTool();
     initOptionsTool();
 }
 
-// get address from coordinates
-// geocoder.geocode({latLng:map.getCenter()},reverseGeocodeResult);
-/*
-function reverseGeocodeResult(results, status) {
-    currentReverseGeocodeResponse = results;
-    if(status == 'OK') {
-      if(results.length == 0) {
-        document.getElementById('formatedAddress').innerHTML = 'None';
-      } else {
-        document.getElementById('formatedAddress').innerHTML = results[0].formatted_address;
-      }
-    } else {
-      document.getElementById('formatedAddress').innerHTML = 'Error';
-    }
-  }
-
-  // Add dragging event listeners.
-  google.maps.event.addListener(marker, 'dragstart', function() {
-    updateMarkerAddress('Dragging...');
-  });
-  
-  google.maps.event.addListener(marker, 'drag', function() {
-    updateMarkerStatus('Dragging...');
-    updateMarkerPosition(marker.getPosition());
-  });
-  
-  google.maps.event.addListener(marker, 'dragend', function() {
-    updateMarkerStatus('Drag ended');
-    geocodePosition(marker.getPosition());
-  });
-}
-
- * 
-*/
-
 
 $(document).ready(function() {
-    google.maps.event.addDomListener(window, 'load', initialize);
+    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.event !== 'undefined') {
+        google.maps.event.addDomListener(window, 'load', initialize);
+    }
 });
 
 // eof

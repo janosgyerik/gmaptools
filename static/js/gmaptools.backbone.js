@@ -150,6 +150,9 @@ App.MapController = Backbone.Model.extend({
         this.geocoder = new google.maps.Geocoder();
         this.markerFactory = new App.MarkerFactory(this.map);
 
+        // make sure *this* is bound to *this* in the map event handlers
+        _.bindAll(this, 'centerChanged', 'zoomChanged', 'dragend');
+
         // google maps event handlers
         google.maps.event.addListener(this.map, 'center_changed', this.centerChanged);
         google.maps.event.addListener(this.map, 'zoom_changed', this.zoomChanged);
@@ -167,8 +170,11 @@ App.MapController = Backbone.Model.extend({
     },
 
     centerChanged: function() {
+        var center = this.map.getCenter();
+        this.set({lat: center.lat(), lon: center.lng()});
     },
     zoomChanged: function() {
+        this.set({zoom: this.map.getZoom()});
     },
     dragend: function() {
     },
@@ -324,9 +330,9 @@ function onGoogleMapsReady() {
     //App.latlonTool.dropPin();
     //App.latlonTool.gotoHome();
 
-    //App.localSearchTool.activate();
-    //App.localSearchTool.keyword.val('pizza');
-    //App.localSearchTool.localSearch();
+    App.localSearchTool.activate();
+    App.localSearchTool.keyword.val('pizza');
+    App.localSearchTool.localSearch();
 }
 
 $(function() {

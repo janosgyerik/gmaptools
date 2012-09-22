@@ -158,7 +158,6 @@ App.MapController = Backbone.Model.extend({
         google.maps.event.addListener(this.map, 'zoom_changed', this.zoomChanged);
         google.maps.event.addListener(this.map, 'dragend', this.dragend);
 
-
         // event handlers for latlon tool
         this.on('getCurrentLatLon', this.getCurrentLatLon, this);
         this.on('gotoHome', this.gotoHome, this);
@@ -337,6 +336,9 @@ function onGoogleMapsReady() {
     //App.localSearchTool.activate();
     //App.localSearchTool.keyword.val('pizza');
     //App.localSearchTool.localSearch();
+
+    // this is to force all views to render
+    App.mapController.trigger('change');
 }
 
 $(function() {

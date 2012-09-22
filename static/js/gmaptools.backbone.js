@@ -112,7 +112,15 @@ App.MapController = Backbone.Model.extend({
     }
 });
 
-App.LatlonTool = Backbone.View.extend({
+App.MapTool = Backbone.View.extend({
+    activate: function() {
+        var id = this.$el.attr('id');
+        var anchor = $('a[href=#' + id + ']');
+        anchor.tab('show');
+    }
+});
+
+App.LatlonTool = App.MapTool.extend({
     el: $('#latlon-tool'),
     initialize: function(options) {
         this.lat = this.$('.lat');
@@ -159,6 +167,57 @@ App.LatlonTool = Backbone.View.extend({
     }
 });
 
+App.LocalSearchTool = App.MapTool.extend({
+    el: $('#localsearch-tool'),
+    initialize: function(options) {
+        this.keyword = this.$('.keyword');
+        this.map = options.map;
+    },
+    events: {
+        'click .btn-local': 'localSearch',
+        'keypress .keyword': 'onEnter'
+    },
+    localSearch: function() {
+        var keyword = this.keyword.val();
+        if (keyword) {
+            this.map.trigger('localSearch', keyword);
+        }
+    },
+    onEnter: function(e) {
+        if (e.keyCode == '13') this.localSearch();
+    }
+});
+/*
+function initLocalSearchTool() {
+    var service = new google.maps.places.PlacesService(map);
+
+    function localSearch() {
+        var request = {
+            location: map.getCenter(),
+            rankBy: google.maps.places.RankBy.DISTANCE,
+            keyword: keyword_input.val()
+        };
+        var callback = function(results, status) {
+            App.mapInfo.set({status: status});
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; ++i) {
+                    var place = results[i];
+                    createMarker(place.geometry.location, createMarkerImage(place.icon, null, null, null, new google.maps.Size(25, 25)));
+                    //Extra info:
+                    //place.vicinity // Budapest, Vas Street 2
+                    //place.name
+                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
+                }
+            }
+            else {
+            }
+        };
+        service.search(request, callback);
+    }
+}
+
+ * */
+
 // instances
 // TODO: put in setup.js
 App.mapInfo = new App.MapInfo;
@@ -175,6 +234,8 @@ App.quickstats = new App.MapInfoQuickView({
 
 App.mapController = new App.MapController;
 App.latlonTool = new App.LatlonTool({map: App.mapController});
+App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
+App.localSearchTool.activate();
 
 //App.router = new App.Router;
 

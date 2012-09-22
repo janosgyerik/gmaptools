@@ -125,58 +125,6 @@ function initGoogleMap() {
     google.maps.event.addListener(map, 'dragend', addressChanged);
 }
 
-function initLatlonTool() {
-    var container = $('#latlon-tool');
-    var lat_input = container.find('.lat');
-    var lon_input = container.find('.lon');
-
-    function getLatLng() {
-        var lat = lat_input.val();
-        var lon = lon_input.val();
-        return lat && lon ? createLatLng(lat, lon) : map.getCenter();
-    }
-
-    function gotoLatLng() {
-        map.panTo(getLatLng());
-    }
-
-    function dropPin() {
-        var latlng = getLatLng();
-        map.panTo(latlng);
-        createMarker(latlng, icons.latlon);
-    }
-
-    function gotoHome() {
-        if (google.loader.ClientLocation) {
-            var lat = google.loader.ClientLocation.latitude;
-            var lon = google.loader.ClientLocation.longitude;
-            map.panTo(createLatLng(lat, lon));
-        }
-        else {
-            map.panTo(home_latlng);
-        }
-    }
-
-    lat_input.keyup(onEnter(gotoLatLng));
-    lon_input.keyup(onEnter(gotoLatLng));
-    
-    var btn_goto = container.find('.btn-goto');
-    btn_goto.bind('click', gotoLatLng);
-
-    var btn_pin = container.find('.btn-pin');
-    btn_pin.bind('click', dropPin);
-
-    var btn_home = container.find('.btn-home');
-    btn_home.bind('click', gotoHome);
-
-    var btn_here = container.find('.btn-here');
-    btn_here.bind('click', function() {
-        var point = map.getCenter();
-        lat_input.val(point.lat());
-        lon_input.val(point.lng());
-    });
-}
-
 function initLocalSearchTool() {
     var container = $('#localsearch-tool');
     var keyword_input = container.find('.keyword');

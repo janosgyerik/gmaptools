@@ -2,13 +2,8 @@ cleaning up
 -----------
 - avoid this: $("a.photo").click(function() { ... });
     -> consider making a new view class
-- no variables in global scope
-    - maybe, use events to tie together the map operations
-        - MapInfo wants to listen to various map events
-            - center changed
-            - address changed
-            - ... etc
-- markers
+- LocationFactory
+- MarkerFactory
     - powered by backbone collection
 - use history api to make the tool tabs selectable
     - using backbone routers
@@ -20,7 +15,7 @@ next
 ----
 - add an info button on each tool to give basic explanation
 - options tab
-    - option to show coordinates on mouse hover
+    - show coordinates of cursor
     - draggable markers
     - cleanup
 - emphasize the error status on failed local search or geocode
@@ -37,8 +32,8 @@ next
     - is it possible to focus on address input when switching to geocode?
 
 
-all features
-------------
+all pending features
+--------------------
 / mark point by coordinates -> yellow
 / place markers for coordinates from google spreadsheet
     - http://gmaps-samples-v3.googlecode.com/svn/trunk/spreadsheets/mapwithsidebar.html

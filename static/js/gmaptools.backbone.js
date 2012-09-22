@@ -17,43 +17,6 @@ _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
 // classes
 // TODO: put in app/*.js
-App.MapInfo = Backbone.Model.extend({
-    defaults: {
-        status: 'N.A.',
-        latitude: 'N.A.',
-        longitude: 'N.A.',
-        zoom: 'N.A.',
-        address: 'N.A.',
-        sw_latitude: 'N.A.',
-        sw_longitude: 'N.A.',
-        ne_latitude: 'N.A.',
-        ne_longitude: 'N.A.'
-    },
-
-    update: function(map) {
-        var param = {};
-        var center = map.getCenter();
-        if (center != null) {
-            param.latitude = center.lat();
-            param.longitude = center.lng();
-        }
-        param.zoom = map.getZoom();
-        var bounds = map.getBounds();
-        if (bounds != null) {
-            var sw = bounds.getSouthWest();
-            var ne = bounds.getNorthEast();
-            param.sw_latitude = sw.lat();
-            param.sw_longitude = sw.lng();
-            param.ne_latitude = ne.lat();
-            param.ne_longitude = ne.lng();
-        }
-        this.set(param);
-    },
-
-    clearAddress: function() {
-        this.set({address: this.defaults.address});
-    }
-});
 
 App.MapInfoDetails = Backbone.View.extend({
     initialize: function() {
@@ -170,7 +133,22 @@ App.MapController = Backbone.Model.extend({
 
     centerChanged: function() {
         var center = this.map.getCenter();
-        this.set({lat: center.lat(), lon: center.lng()});
+        var params = {
+            lat: center.lat(),
+            lon: center.lng()
+        };
+        var bounds = this.map.getBounds();
+        if (bounds) {
+            var sw = bounds.getSouthWest();
+            var ne = bounds.getNorthEast();
+            _.extend(params, {
+                sw_latitude: sw.lat(),
+                sw_longitude: sw.lng(),
+                ne_latitude: ne.lat(),
+                ne_longitude: ne.lng()
+            });
+        }
+        this.set(params);
     },
     zoomChanged: function() {
         this.set({zoom: this.map.getZoom()});

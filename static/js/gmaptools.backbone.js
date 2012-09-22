@@ -198,28 +198,32 @@ App.MapController = Backbone.Model.extend({
             rankBy: google.maps.places.RankBy.DISTANCE,
             keyword: keyword
         };
-        var _self = this; // saving 'this' pointer
-        var callback = function(results, status) {
-            _self.set({status: status});
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                // this.errors.hide();
-                for (var i = 0; i < results.length; ++i) {
-                    var place = results[i];
-                    var markerImage = _self.markerImageFactory.getMarkerImage(place.icon, {size: 25});
-                    _self.markerFactory.getMarker(place.geometry.location, markerImage);
-                    //Extra info:
-                    //place.vicinity // Budapest, Vas Street 2
-                    //place.name
-                    //place.types // ['cafe', 'restaurant', 'food', 'establishment']
-                }
+        // note: could not make this work with a var callback = function ...
+        // had to create this.localSearchCallback to have proper
+        // bind of *this* using _.bindAll
+        // also, I couldn't get it to work with _.bind either...
+        _.bindAll(this, 'localSearchCallback');
+        this.placesService.search(request, this.localSearchCallback);
+    },
+    localSearchCallback: function(results, status) {
+        this.set({status: status});
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            // this.errors.hide();
+            for (var i = 0; i < results.length; ++i) {
+                var place = results[i];
+                var markerImage = this.markerImageFactory.getMarkerImage(place.icon, {size: 25});
+                this.markerFactory.getMarker(place.geometry.location, markerImage);
+                //Extra info:
+                //place.vicinity // Budapest, Vas Street 2
+                //place.name
+                //place.types // ['cafe', 'restaurant', 'food', 'establishment']
             }
-            else {
-                // this.errors.clear();
-                // this.errors.append('Local search failed');
-                // this.errors.show();
-            }
-        };
-        this.placesService.search(request, callback);
+        }
+        else {
+            // this.errors.clear();
+            // this.errors.append('Local search failed');
+            // this.errors.show();
+        }
     }
 });
 
@@ -330,9 +334,9 @@ function onGoogleMapsReady() {
     //App.latlonTool.dropPin();
     //App.latlonTool.gotoHome();
 
-    App.localSearchTool.activate();
-    App.localSearchTool.keyword.val('pizza');
-    App.localSearchTool.localSearch();
+    //App.localSearchTool.activate();
+    //App.localSearchTool.keyword.val('pizza');
+    //App.localSearchTool.localSearch();
 }
 
 $(function() {

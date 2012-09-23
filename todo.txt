@@ -1,6 +1,5 @@
 cleaning up using backbone
 --------------------------
-- drop pin not working
 - trigger address update on ...
     - dragend
     - latlon jump

@@ -182,7 +182,9 @@ App.MapController = Backbone.Model.extend({
         this.map.panTo(this.locationFactory.getLocation(lat, lon));
     },
     dropPin: function(lat, lon) {
-         this.markerFactory.addMarker(this.locationFactory.getLocation(lat, lon), {type: 'latlon'});
+        var pos = this.locationFactory.getLocation(lat, lon);
+        var markerImage = this.markerImageFactory.getPresetMarkerImage('latlon');
+        this.markerFactory.getMarker(pos, markerImage);
     },
     localSearch: function(keyword) {
         var request = {

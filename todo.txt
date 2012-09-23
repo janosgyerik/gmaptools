@@ -1,8 +1,5 @@
 cleaning up using backbone
 --------------------------
-- trigger address update on ...
-    - dragend
-    - latlon jump
 - migrate all tools to backbone
     - options
     - cookies

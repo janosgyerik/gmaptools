@@ -169,6 +169,7 @@ App.MapController = Backbone.Model.extend({
         this.set({zoom: this.map.getZoom()});
     },
     dragend: function() {
+        this.updateAddress();
     },
 
     getCurrentLatLon: function(callback) {
@@ -179,7 +180,9 @@ App.MapController = Backbone.Model.extend({
     },
     gotoLatLon: function(lat, lon) {
         this.set({lat: lat, lon: lon});
+        this.map.setCenter(this.locationFactory.getLocation(lat, lon));
         this.map.panTo(this.locationFactory.getLocation(lat, lon));
+        this.updateAddress();
     },
     dropPin: function(lat, lon) {
         var pos = this.locationFactory.getLocation(lat, lon);
@@ -232,12 +235,10 @@ App.MapController = Backbone.Model.extend({
         this.geocoder.geocode(request, this.geocodeCallback);
     },
     geocodeCallback: function(results, status) {
-        this.set({status: status});
+        this.updateStatusFromGeocodeResults(results, status);
         if (status == google.maps.GeocoderStatus.OK) {
-            // this.errors.hide();
             for (var i = 0; i < results.length; ++i) {
                 var result = results[i];
-                this.set({address: result.formatted_address});
                 //this.map.panToBounds(result.geometry.bounds);
                 this.map.fitBounds(result.geometry.viewport);
                 this.map.setCenter(result.geometry.location);
@@ -245,12 +246,34 @@ App.MapController = Backbone.Model.extend({
                 this.markerFactory.getMarker(result.geometry.location, markerImage);
                 break;
             }
+        }
+    },
+    updateStatusFromGeocodeResults: function(results, status) {
+        this.set({status: status});
+        if (status == google.maps.GeocoderStatus.OK) {
+            // this.errors.hide();
+            for (var i = 0; i < results.length; ++i) {
+                var result = results[i];
+                this.set({address: result.formatted_address});
+                break;
+            }
         } else {
             // this.errors.clear();
             // this.errors.append('Local search failed');
             // this.errors.show();
         }
-    }
+    },
+    updateAddress: function() {
+        var request = {
+            latLng: this.map.getCenter(),
+        };
+        // note: could not make this work with a var callback = function ...
+        // had to create this.geocodeCallback to have proper
+        // bind of *this* using _.bindAll
+        // also, I couldn't get it to work with _.bind either...
+        _.bindAll(this, 'updateStatusFromGeocodeResults');
+        this.geocoder.geocode(request, this.updateStatusFromGeocodeResults);
+    },
 });
 
 App.Tool = Backbone.View.extend({

@@ -209,6 +209,9 @@ App.Tool = Backbone.View.extend({
         var id = this.$el.attr('id');
         var anchor = $('a[href=#' + id + ']');
         anchor.tab('show');
+        if (this.fieldToFocus) {
+            this.fieldToFocus.focus();
+        }
     }
 });
 
@@ -219,6 +222,7 @@ App.LatlonTool = App.Tool.extend({
         this.lon = this.$('.lon');
         this.map = options.map;
     },
+    fieldToFocus: this.$('.lat'),
     events: {
         'click .btn-goto': 'gotoLatLon',
         'click .btn-pin':  'dropPin',
@@ -265,6 +269,7 @@ App.LocalSearchTool = App.Tool.extend({
         this.keyword = this.$('.keyword');
         this.map = options.map;
     },
+    fieldToFocus: this.$('.keyword'),
     events: {
         'click .btn-local': 'localSearch',
         'keypress .keyword': 'onEnter'

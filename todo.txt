@@ -1,14 +1,16 @@
 cleaning up using backbone
 --------------------------
+- drop pin not working
+- trigger address update on ...
+    - dragend
+    - latlon jump
 - migrate all tools to backbone
+    - options
+    - cookies
 - more backbone classes
     - LocalSearchResults
 - backbone router for tool activation
 - backbone router for tool actions
-- trigger address update on latlon change too
-- focus control when switching tool
-    - is it possible to focus on address input when switching to geocode?
-    -> use the activate method, with parameter to focus
 
 
 polish basic tools
@@ -22,6 +24,8 @@ polish basic tools
     - clear all local search results
 - geocode
     - clear all geocode results
+- focus control when switching tool
+    - is it possible to focus on address input when switching to geocode?
 
 
 spreadsheet tools

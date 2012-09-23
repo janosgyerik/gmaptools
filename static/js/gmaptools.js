@@ -9,71 +9,6 @@
  */
 
 
-var palette_baseurl = "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons";
-var defaultIcon_src = palette_baseurl + '/green.png';
-var latlonIcon_src = palette_baseurl + '/blue-dot.png';
-var searchIcon_src = palette_baseurl + '/red-dot.png';
-var localSearchIcon_src = palette_baseurl + '/yellow-dot.png';
-var geocodeIcon_src = palette_baseurl + '/orange-dot.png';
-
-var map;
-var geocoder;
-
-// preloaded MarkerIcon objects
-var icons = {};
-
-function createLatLng(lat, lon) {
-    return new google.maps.LatLng(lat, lon);
-}
-
-var markers = [];
-
-function createMarker(latlng, icon) {
-    var marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-        title: latlng.toString(),
-        icon: icon
-    });
-    markers.push(marker);
-    return marker;
-}
-
-function createMarkerImage(src, size, origin, anchor, scaledSize) {
-    return new google.maps.MarkerImage(src, size, origin, anchor, scaledSize);
-}
-
-function centerChanged() {
-    App.mapInfo.update(map);
-}
-
-function addressChanged() {
-    var request = {
-        latLng: map.getCenter()
-    };
-    var callback = function(results, status) {
-        App.mapInfo.set({status: status});
-        if (status == google.maps.GeocoderStatus.OK) {
-            for (var i = 0; i < results.length; ++i) {
-                var result = results[i];
-                App.mapInfo.set({address: result.formatted_address});
-                break;
-            }
-        } else {
-            App.mapInfo.clearAddress();
-        }
-    };
-    geocoder.geocode(request, callback);
-}
-
-function onEnter(func) {
-    return function(e) {
-        if (e.keyCode == '13') {
-            func();
-        }
-    }
-}
-
 var cookie_expires = 7;
 var cookie_path = null;
 
@@ -88,39 +23,6 @@ function setCookie(name, value) {
 
 function clearCookie(name) {
     setCookie(name, '');
-}
-
-function initGeocodeTool() {
-    var container = $('#geocode-tool');
-    var address_input = container.find('.address');
-
-    function geocode() {
-        var request = {
-            address: address_input.val(),
-            partialmatch: true
-        };
-        var callback = function(results, status) {
-            App.mapInfo.set({status: status});
-            if (status == google.maps.GeocoderStatus.OK) {
-                for (var i = 0; i < results.length; ++i) {
-                    var result = results[i];
-                    App.mapInfo.set({address: result.formatted_address});
-                    //map.panToBounds(result.geometry.bounds);
-                    map.fitBounds(result.geometry.viewport);
-                    map.setCenter(result.geometry.location);
-                    createMarker(result.geometry.location, icons.geocode);
-                    break;
-                }
-            } else {
-            }
-        };
-        geocoder.geocode(request, callback);
-    }
-
-    address_input.keyup(onEnter(geocode));
-    
-    var btn_geocode = container.find('.btn-geocode');
-    btn_geocode.bind('click', geocode);
 }
 
 var option_show_crosshair = getCookie('option_show_crosshair', 'true') == 'true';

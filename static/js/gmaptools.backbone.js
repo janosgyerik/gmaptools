@@ -67,7 +67,21 @@ App.MarkerFactory = Backbone.Collection.extend({
 });
 
 App.MarkerImageFactory = Backbone.Collection.extend({
-    getMarkerImage: function(src, options) {
+    baseurl: 'http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons',
+    initialize: function() {
+        this.presets = {
+            default: this.baseurl + '/green.png',
+            search: this.baseurl + '/red-dot.png',
+            latlon: this.baseurl + '/blue-dot.png',
+            localSearch: this.baseurl + '/yellow-dot.png',
+            geocode: this.baseurl + '/orange-dot.png'
+        };
+    },
+    getPresetMarkerImage: function(name) {
+        var src = this.presets[name];
+        return new google.maps.MarkerImage(src);
+    },
+    getCustomMarkerImage: function(src, options) {
         if (options.size) {
             return new google.maps.MarkerImage(src, null, null, null, new google.maps.Size(options.size, options.size));
         }
@@ -129,6 +143,7 @@ App.MapController = Backbone.Model.extend({
 
         // event handlers for local search tool
         this.on('localSearch', this.localSearch, this);
+        this.on('geocode', this.geocode, this);
     },
 
     centerChanged: function() {
@@ -188,7 +203,7 @@ App.MapController = Backbone.Model.extend({
             // this.errors.hide();
             for (var i = 0; i < results.length; ++i) {
                 var place = results[i];
-                var markerImage = this.markerImageFactory.getMarkerImage(place.icon, {size: 25});
+                var markerImage = this.markerImageFactory.getCustomMarkerImage(place.icon, {size: 25});
                 this.markerFactory.getMarker(place.geometry.location, markerImage);
                 //Extra info:
                 //place.vicinity // Budapest, Vas Street 2
@@ -197,6 +212,38 @@ App.MapController = Backbone.Model.extend({
             }
         }
         else {
+            // this.errors.clear();
+            // this.errors.append('Local search failed');
+            // this.errors.show();
+        }
+    },
+    geocode: function(address) {
+        var request = {
+            address: address,
+            partialmatch: true
+        };
+        // note: could not make this work with a var callback = function ...
+        // had to create this.geocodeCallback to have proper
+        // bind of *this* using _.bindAll
+        // also, I couldn't get it to work with _.bind either...
+        _.bindAll(this, 'geocodeCallback');
+        this.geocoder.geocode(request, this.geocodeCallback);
+    },
+    geocodeCallback: function(results, status) {
+        this.set({status: status});
+        if (status == google.maps.GeocoderStatus.OK) {
+            // this.errors.hide();
+            for (var i = 0; i < results.length; ++i) {
+                var result = results[i];
+                this.set({address: result.formatted_address});
+                //this.map.panToBounds(result.geometry.bounds);
+                this.map.fitBounds(result.geometry.viewport);
+                this.map.setCenter(result.geometry.location);
+                var markerImage = this.markerImageFactory.getPresetMarkerImage('geocode');
+                this.markerFactory.getMarker(result.geometry.location, markerImage);
+                break;
+            }
+        } else {
             // this.errors.clear();
             // this.errors.append('Local search failed');
             // this.errors.show();
@@ -285,6 +332,28 @@ App.LocalSearchTool = App.Tool.extend({
     }
 });
 
+App.GeocodeTool = App.Tool.extend({
+    el: $('#geocode-tool'),
+    initialize: function(options) {
+        this.address = this.$('.address');
+        this.map = options.map;
+    },
+    fieldToFocus: this.$('.address'),
+    events: {
+        'click .btn-geocode': 'geocode',
+        'keypress .address': 'onEnter'
+    },
+    geocode: function() {
+        var address = this.address.val();
+        if (address) {
+            this.map.trigger('geocode', address);
+        }
+    },
+    onEnter: function(e) {
+        if (e.keyCode == '13') this.geocode();
+    }
+});
+
 App.OfflineView = Backbone.View.extend({
     el: $('#main-content'),
 
@@ -302,6 +371,7 @@ function onGoogleMapsReady() {
     App.mapController = new App.MapController;
     App.latlonTool = new App.LatlonTool({map: App.mapController});
     App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
+    App.geocodeTool = new App.GeocodeTool({map: App.mapController});
 
     App.detailedstats = new App.MapInfoDetails({
         el: $('#mapinfo-details'),
@@ -330,6 +400,10 @@ function onGoogleMapsReady() {
     //App.localSearchTool.activate();
     //App.localSearchTool.keyword.val('pizza');
     //App.localSearchTool.localSearch();
+
+    //App.geocodeTool.activate();
+    //App.geocodeTool.address.val('6 Rue Mizon, 75015 Paris, France');
+    //App.geocodeTool.geocode();
 
     // this is to force all views to render
     App.mapController.trigger('change');

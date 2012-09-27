@@ -5,7 +5,6 @@ cleaning up using backbone
     - cookies
 - more backbone classes
     - LocalSearchResults
-- backbone router for tool activation
 - backbone router for tool actions
 
 

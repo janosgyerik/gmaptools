@@ -390,6 +390,27 @@ App.OfflineView = Backbone.View.extend({
     }
 });
 
+App.Router = Backbone.Router.extend({
+    routes: {
+        'tools/latlon': 'activateLatlon',
+        'tools/localSearch': 'activateLocalSearch',
+        'tools/geocode': 'activateGeocode',
+        '*placeholder': 'activateLatlon'
+    },
+    activateTool: function(tool) {
+        tool.activate();
+    },
+    activateLatlon: function() {
+        this.activateTool(App.latlonTool);
+    },
+    activateLocalSearch: function() {
+        this.activateTool(App.localSearchTool);
+    },
+    activateGeocode: function() {
+        this.activateTool(App.geocodeTool);
+    }
+});
+
 function onGoogleMapsReady() {
     // instances
     // TODO: put in setup.js
@@ -408,10 +429,10 @@ function onGoogleMapsReady() {
         model: App.mapController
     });
 
-    //App.router = new App.Router;
+    App.router = new App.Router;
 
     // initialize the Backbone router
-    //Backbone.history.start();
+    Backbone.history.start();
 
     // debugging
     //App.latlonTool.activate();

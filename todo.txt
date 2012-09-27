@@ -19,8 +19,6 @@ polish basic tools
     - clear all local search results
 - geocode
     - clear all geocode results
-- focus control when switching tool
-    - is it possible to focus on address input when switching to geocode?
 
 
 spreadsheet tools

@@ -379,14 +379,21 @@ App.GeocodeTool = App.Tool.extend({
     }
 });
 
-App.OfflineView = Backbone.View.extend({
-    el: $('#main-content'),
-
-    template: _.template($('#offline-template').html()),
-
-    render: function() {
-        this.$el.html(this.template());
-        return this;
+App.Toolbar = Backbone.View.extend({
+    el: $('#toolbar'),
+    events: {
+        'click a[href="#latlon-tool"]': 'openLatlonTool',
+        'click a[href="#localsearch-tool"]': 'openLocalSearchTool',
+        'click a[href="#geocode-tool"]': 'openGeocodeTool'
+    },
+    openLatlonTool: function() {
+        App.router.openLatlonTool();
+    },
+    openLocalSearchTool: function() {
+        App.router.openLocalSearchTool();
+    },
+    openGeocodeTool: function() {
+        App.router.openGeocodeTool();
     }
 });
 
@@ -408,6 +415,26 @@ App.Router = Backbone.Router.extend({
     },
     activateGeocode: function() {
         this.activateTool(App.geocodeTool);
+    },
+    openLatlonTool: function() {
+        this.navigate('tools/latlon', {trigger: true});
+    },
+    openLocalSearchTool: function() {
+        this.navigate('tools/localSearch', {trigger: true});
+    },
+    openGeocodeTool: function() {
+        this.navigate('tools/geocode', {trigger: true});
+    }
+});
+
+App.OfflineView = Backbone.View.extend({
+    el: $('#main-content'),
+
+    template: _.template($('#offline-template').html()),
+
+    render: function() {
+        this.$el.html(this.template());
+        return this;
     }
 });
 
@@ -418,6 +445,7 @@ function onGoogleMapsReady() {
     App.latlonTool = new App.LatlonTool({map: App.mapController});
     App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
+    App.toolbar = new App.Toolbar;
 
     App.detailedstats = new App.MapInfoDetails({
         el: $('#mapinfo-details'),

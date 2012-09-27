@@ -331,7 +331,10 @@ App.LatlonTool = App.Tool.extend({
         this.map.trigger('gotoHome');
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') this.gotoLatLon();
+        if (e.keyCode == '13') {
+            e.preventDefault();
+            this.gotoLatLon();
+        }
     }
 });
 
@@ -353,7 +356,10 @@ App.LocalSearchTool = App.Tool.extend({
         }
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') this.localSearch();
+        if (e.keyCode == '13') {
+            e.preventDefault();
+            this.localSearch();
+        }
     }
 });
 
@@ -375,7 +381,10 @@ App.GeocodeTool = App.Tool.extend({
         }
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') this.geocode();
+        if (e.keyCode == '13') {
+            e.preventDefault();
+            this.geocode();
+        }
     }
 });
 

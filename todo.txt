@@ -19,6 +19,7 @@ polish basic tools
     - clear all local search results
 - geocode
     - clear all geocode results
+- *if* possible, replace keypress magic with binding to onSubmit instead
 
 
 spreadsheet tools

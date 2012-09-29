@@ -12,14 +12,14 @@ The purpose of this project is twofold:
 
 If you would like to add more tools to the collection, or you spot
 flaws in the use of Backbone (or anything else for that matter),
-please fork the project and share your knowledge!
+please fork the project and share your knowledge. Thanks!
 
 https://github.com/janosgyerik/gmaptools
 
 
 Live demos
 ----------
-- http://gmaptools.janosgyerik.com/
+- http://janosgyerik.github.com/gmaptools/
 
 
 Features

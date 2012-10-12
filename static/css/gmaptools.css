@@ -11,6 +11,7 @@
 #map_canvas {
     height: 400px;
     width: 100%;
+    border: 1px inset #ccc;
 }
 
 /* top, margin-left are tuned to #map.height=400 */

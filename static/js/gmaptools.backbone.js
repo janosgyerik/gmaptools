@@ -293,6 +293,11 @@ App.LatlonTool = App.Tool.extend({
         this.lat = this.$('.lat');
         this.lon = this.$('.lon');
         this.map = options.map;
+        this.$('.features').popover({
+            content: $('#features-latlon').html(),
+            placement: 'bottom',
+            trigger: 'hover'
+        });
     },
     fieldToFocus: this.$('.lat'),
     events: {
@@ -343,6 +348,11 @@ App.LocalSearchTool = App.Tool.extend({
     initialize: function(options) {
         this.keyword = this.$('.keyword');
         this.map = options.map;
+        this.$('.features').popover({
+            content: $('#features-localsearch').html(),
+            placement: 'bottom',
+            trigger: 'hover'
+        });
     },
     fieldToFocus: this.$('.keyword'),
     events: {
@@ -368,6 +378,11 @@ App.GeocodeTool = App.Tool.extend({
     initialize: function(options) {
         this.address = this.$('.address');
         this.map = options.map;
+        this.$('.features').popover({
+            content: $('#features-geocode').html(),
+            placement: 'bottom',
+            trigger: 'hover'
+        });
     },
     fieldToFocus: this.$('.address'),
     events: {

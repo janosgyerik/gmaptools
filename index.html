@@ -92,6 +92,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="latlon-tool">
                         <form class="form-inline">
+                            <button class="btn btn-link features" title="Features"><i class="icon-question-sign"></i></a></button>
                             <input type="text" class="input-small span3 lat" placeholder="Latitude">
                             <input type="text" class="input-small span3 lon" placeholder="Longitude">
                             <a href="#" class="btn btn-goto">Go to</a>
@@ -102,12 +103,14 @@
                     </div>
                     <div class="tab-pane" id="localsearch-tool">
                         <form class="form-inline">
+                            <button class="btn btn-link features" title="Features"><i class="icon-question-sign"></i></a></button>
                             <input type="text" class="input-small span4 keyword" placeholder="Keyword">
                             <a href="#" class="btn btn-local"><i class="icon-search"></i> Local search</a>
                         </form>
                     </div>
                     <div class="tab-pane" id="geocode-tool">
                         <form class="form-inline">
+                            <button class="btn btn-link features" title="Features"><i class="icon-question-sign"></i></a></button>
                             <input type="text" class="input-small span4 address" placeholder="Address">
                             <a href="#" class="btn btn-geocode"><i class="icon-globe"></i> Geocode</a>
                         </form>
@@ -188,6 +191,30 @@
             ne=@({{ ne_latitude }}, {{ ne_longitude }})
         </div>
     </div>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="features-latlon">
+    <ul>
+        <li>Drag the map and the info in the sidebar will be updated</li>
+        <li>Enter Latitude-Longitude and press <strong>Enter</strong> to jump!</li>
+        <li><span class="badge">Here</span> copy the current coordinates into the fields</li>
+        <li><span class="badge">Home</span> return to original location (on page load)</li>
+    </ul>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="features-localsearch">
+    <ul>
+        <li>Enter some keyword like "pizza" and press <strong>Enter</strong> to search for places around the map center</li>
+    </ul>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="features-geocode">
+    <ul>
+        <li>Enter an address and press <strong>Enter</strong> to perform geocode search for coordinates</li>
+    </ul>
 </script>
 
 <script type="text/template" id="offline-template">

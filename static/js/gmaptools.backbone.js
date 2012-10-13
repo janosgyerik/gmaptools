@@ -163,6 +163,7 @@ App.PlacesView = Backbone.View.extend({
         var view = new App.PlaceView({model: place});
         view.map = this.map;
         this.$el.append(view.render().el);
+        App.placesTab.activate();
     }
 });
 
@@ -375,7 +376,7 @@ App.Tool = Backbone.View.extend({
     }
 });
 
-App.StatusTab = App.Tool.extend();
+App.InfoTab = App.Tool.extend();
 App.PlacesTab = App.Tool.extend();
 
 App.LatlonTool = App.Tool.extend({
@@ -563,7 +564,7 @@ function onGoogleMapsReady() {
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
     App.toolbar = new App.Toolbar;
 
-    App.statusTab = new App.StatusTab({el: '#mapinfo-details'});
+    App.infoTab = new App.InfoTab({el: '#mapinfo-details'});
     App.placesTab = new App.PlacesTab({el: '#mapinfo-places'});
 
     App.detailedstats = new App.MapInfoDetails({

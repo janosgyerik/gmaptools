@@ -39,11 +39,8 @@ div#crosshair {
 }
 
 div.place {
-    border-top: 1px solid #ccc;
     padding: .5em 0;
-}
-div.place:first-child {
-    border-top: 0;
+    border-bottom: 1px solid #ccc;
 }
 div.place:hover {
     background-color: #f3f3f3;

@@ -320,12 +320,19 @@ App.MapController = Backbone.Model.extend({
         if (status == google.maps.GeocoderStatus.OK) {
             for (var i = 0; i < results.length; ++i) {
                 var result = results[i];
-                //this.map.panToBounds(result.geometry.bounds);
-                this.map.fitBounds(result.geometry.viewport);
-                this.map.setCenter(result.geometry.location);
+                if (i == 0) {
+                    this.map.fitBounds(result.geometry.viewport);
+                    this.map.setCenter(result.geometry.location);
+                }
                 var markerImage = this.markerImageFactory.getPresetMarkerImage('geocode');
-                this.markerFactory.getMarker(result.geometry.location, markerImage);
-                break;
+                var marker = this.markerFactory.getMarker(result.geometry.location, markerImage);
+                this.places.add({
+                    lat: result.geometry.location.lat(),
+                    lon: result.geometry.location.lng(),
+                    address: result.formatted_address,
+                    types: result.types,
+                    marker: marker
+                });
             }
         }
     },

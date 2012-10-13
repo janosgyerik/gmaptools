@@ -265,6 +265,10 @@ App.MapController = Backbone.Model.extend({
         this.updateAddress();
     },
     dropPin: function(lat, lon) {
+        if (!(lat || lon)) {
+            lat = this.get('lat');
+            lon = this.get('lon');
+        }
         var pos = this.locationFactory.getLocation(lat, lon);
         var markerImage = this.markerImageFactory.getPresetMarkerImage('latlon');
         this.markerFactory.getMarker(pos, markerImage);
@@ -415,6 +419,10 @@ App.LatlonTool = App.Tool.extend({
         if (lat && lon) {
             this.map.trigger('gotoLatLon', lat, lon);
             this.map.trigger('dropPin', lat, lon);
+        }
+        else if (!(lat || lon)) {
+            this.map.trigger('dropPin');
+            this.getCurrentLatLon();
         }
     },
     getCurrentLatLon: function() {

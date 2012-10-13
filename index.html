@@ -61,16 +61,15 @@
           <div class="tabbable">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#mapinfo-details" data-toggle="tab">Map</a></li>
+                <li><a href="#mapinfo-places" data-toggle="tab">Places</a></li>
                 <!--
-                <li><a href="#tab2" data-toggle="tab">Markers</a></li>
                 <li><a href="#tab3" data-toggle="tab">History</a></li>
                 -->
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="mapinfo-details">
                 </div>
-                <div class="tab-pane" id="tab2">
-                    <p>List of markers will come here</p>
+                <div class="tab-pane" id="mapinfo-places">
                 </div>
                 <div class="tab-pane" id="tab3">
                     <p>History entries will come here</p>
@@ -194,6 +193,23 @@
 </script>
 
 <!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="mapinfo-places-item-template">
+    <div class="row-fluid">
+      <div class="span2 goto">
+          <img src="{{ icon }}">
+      </div>
+      <div class="span8 goto">
+          <div><strong>{{ name }}</strong></div>
+          <div>{{ address }}</div>
+          <div>{{ typesStr }}</div>
+      </div>
+      <div class="span2">
+          <a class="destroy"></a>
+      </div>
+    </div>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
 <script type="text/template" id="features-latlon">
     <ul>
         <li>Drag the map and the info in the sidebar will be updated</li>
@@ -207,6 +223,7 @@
 <script type="text/template" id="features-localsearch">
     <ul>
         <li>Enter some keyword like "pizza" and press <strong>Enter</strong> to search for places around the map center</li>
+        <li>Search results are shown in the <strong>Places</strong> tab in the sidebar</li>
     </ul>
 </script>
 
@@ -217,6 +234,7 @@
     </ul>
 </script>
 
+<!-- TODO: this should be moved to a file to serve via CDN -->
 <script type="text/template" id="offline-template">
       <div class="hero-unit">
         <div class="alert alert-block alert-error">

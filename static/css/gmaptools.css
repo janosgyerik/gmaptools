@@ -4,6 +4,10 @@
  *
  * */
 
+body {
+    overflow: hidden;
+}
+
 #map {
     position: relative;
 }
@@ -12,6 +16,12 @@
     height: 400px;
     width: 100%;
     border: 1px inset #ccc;
+}
+
+#mapinfo-places {
+    max-height: 450px;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 /* top, margin-left are tuned to #map.height=400 */
@@ -26,6 +36,17 @@ div#crosshair {
     background: url(../images/crosshair.gif);
     background-position: center center;
     background-repeat: no-repeat;
+}
+
+div.place {
+    border-top: 1px solid #ccc;
+    padding: .5em 0;
+}
+div.place:first-child {
+    border-top: 0;
+}
+div.place:hover {
+    background-color: #f3f3f3;
 }
 
 

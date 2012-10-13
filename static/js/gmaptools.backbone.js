@@ -91,6 +91,81 @@ App.MarkerImageFactory = Backbone.Collection.extend({
     }
 });
 
+App.Place = Backbone.Model.extend({
+    defaults: {
+        lat: null,
+        lon: null,
+        name: '',
+        address: '',
+        types: [],
+        marker: '',
+        icon: '',  // derived from .marker
+        typesStr: ''  // derived from .types
+    },
+    initialize: function() {
+        this.on('change:types', this.onTypesChanged, this);
+        this.on('change:marker', this.onMarkerChanged, this);
+        this.trigger('change:types');
+        this.trigger('change:marker');
+    },
+    onTypesChanged: function() {
+        var types = this.get('types');
+        var typesStr = _.map(types, function(item) {
+            return '<span class="badge">' + item + '</span>';
+        }).join(' ');
+        this.set({typesStr: typesStr});
+    },
+    onMarkerChanged: function() {
+        this.set({icon: this.get('marker').icon.url});
+    }
+});
+
+App.Places = Backbone.Collection.extend({
+    model: App.Place,
+    initialize: function() {
+        // TODO: I don't know why, but without this line
+        // the trigger in PlaceView does not work...
+        this.on('add', this.onChange, this);
+    },
+    onChange: function() {
+    }
+});
+
+App.PlaceView = Backbone.View.extend({
+    className: 'place',
+    template: _.template($('#mapinfo-places-item-template').html()),
+    events: {
+        'click .goto': 'goto',
+        'click a.destroy': 'clear'
+    },
+    goto: function() {
+        var lat = this.model.get('lat');
+        var lon = this.model.get('lon');
+        this.map.trigger('gotoLatLon', lat, lon);
+    },
+    initialize: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    },
+    clear: function() {
+        this.model.clear();
+    }
+});
+
+App.PlacesView = Backbone.View.extend({
+    initialize: function(options) {
+        this.map = options.map;
+        this.collection.on('add', this.add, this);
+        //this.collection.on('remove', this.render, this);
+        //this.collection.on('reset', this.render, this);
+    },
+    add: function(place) {
+        var view = new App.PlaceView({model: place});
+        view.map = this.map;
+        this.$el.append(view.render().el);
+    }
+});
+
 App.MapController = Backbone.Model.extend({
     defaults: {
         status: 'N.A.',
@@ -103,7 +178,9 @@ App.MapController = Backbone.Model.extend({
         ne_latitude: 'N.A.',
         ne_longitude: 'N.A.'
     },
-    initialize: function() {
+    initialize: function(places) {
+        this.places = places;
+
         // initialize helper factory objects
         this.locationFactory = new App.LocationFactory;
         this.markerImageFactory = new App.MarkerImageFactory;
@@ -209,11 +286,15 @@ App.MapController = Backbone.Model.extend({
             for (var i = 0; i < results.length; ++i) {
                 var place = results[i];
                 var markerImage = this.markerImageFactory.getCustomMarkerImage(place.icon, {size: 25});
-                this.markerFactory.getMarker(place.geometry.location, markerImage);
-                //Extra info:
-                //place.vicinity // Budapest, Vas Street 2
-                //place.name
-                //place.types // ['cafe', 'restaurant', 'food', 'establishment']
+                var marker = this.markerFactory.getMarker(place.geometry.location, markerImage);
+                this.places.add({
+                    lat: place.geometry.location.lat(),
+                    lon: place.geometry.location.lng(),
+                    name: place.name,
+                    address: place.vicinity,
+                    types: place.types,
+                    marker: marker
+                });
             }
         }
         else {
@@ -465,7 +546,8 @@ App.OfflineView = Backbone.View.extend({
 function onGoogleMapsReady() {
     // instances
     // TODO: put in setup.js
-    App.mapController = new App.MapController;
+    App.places = new App.Places;
+    App.mapController = new App.MapController(App.places);
     App.latlonTool = new App.LatlonTool({map: App.mapController});
     App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
@@ -479,6 +561,12 @@ function onGoogleMapsReady() {
     App.quickstats = new App.MapInfoQuickView({
         el: $('#mapinfo-quickview'),
         model: App.mapController
+    });
+
+    App.placesView = new App.PlacesView({
+        el: $('#mapinfo-places'),
+        collection: App.places,
+        map: App.mapController
     });
 
     App.router = new App.Router;

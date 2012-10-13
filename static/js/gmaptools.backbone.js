@@ -368,6 +368,9 @@ App.Tool = Backbone.View.extend({
     }
 });
 
+App.StatusTab = App.Tool.extend();
+App.PlacesTab = App.Tool.extend();
+
 App.LatlonTool = App.Tool.extend({
     el: $('#latlon-tool'),
     initialize: function(options) {
@@ -553,6 +556,9 @@ function onGoogleMapsReady() {
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
     App.toolbar = new App.Toolbar;
 
+    App.statusTab = new App.StatusTab({el: '#mapinfo-details'});
+    App.placesTab = new App.PlacesTab({el: '#mapinfo-places'});
+
     App.detailedstats = new App.MapInfoDetails({
         el: $('#mapinfo-details'),
         model: App.mapController
@@ -583,12 +589,14 @@ function onGoogleMapsReady() {
     //App.latlonTool.dropPin();
     //App.latlonTool.gotoHome();
 
+    //App.placesTab.activate();
     //App.localSearchTool.activate();
     //App.localSearchTool.keyword.val('pizza');
     //App.localSearchTool.localSearch();
 
+    //App.placesTab.activate();
     //App.geocodeTool.activate();
-    //App.geocodeTool.address.val('6 Rue Mizon, 75015 Paris, France');
+    //App.geocodeTool.address.val('6 Rue Gassendi, 75014 Paris, France');
     //App.geocodeTool.geocode();
 
     // this is to force all views to render

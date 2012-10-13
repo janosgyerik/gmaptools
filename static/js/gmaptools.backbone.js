@@ -98,7 +98,7 @@ App.Place = Backbone.Model.extend({
         name: '',
         address: '',
         types: [],
-        marker: '',
+        marker: null,
         icon: '',  // derived from .marker
         typesStr: ''  // derived from .types
     },
@@ -117,6 +117,9 @@ App.Place = Backbone.Model.extend({
     },
     onMarkerChanged: function() {
         this.set({icon: this.get('marker').icon.url});
+    },
+    destroy: function() {
+        this.get('marker').setMap(null);
     }
 });
 
@@ -148,7 +151,8 @@ App.PlaceView = Backbone.View.extend({
         return this;
     },
     clear: function() {
-        this.model.clear();
+        this.model.destroy();
+        this.remove();
     }
 });
 
@@ -156,8 +160,6 @@ App.PlacesView = Backbone.View.extend({
     initialize: function(options) {
         this.map = options.map;
         this.collection.on('add', this.add, this);
-        //this.collection.on('remove', this.render, this);
-        //this.collection.on('reset', this.render, this);
     },
     add: function(place) {
         var view = new App.PlaceView({model: place});

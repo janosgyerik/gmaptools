@@ -46,5 +46,21 @@ div.place:hover {
     background-color: #f3f3f3;
 }
 
+.destroy {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background: url(../images/destroy.png) no-repeat center center;
+    display: block;
+}
+
+div.place .destroy {
+    display: none;
+}
+
+div.place:hover .destroy {
+    display: block;
+}
+
 
 /* eof */

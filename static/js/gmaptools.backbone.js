@@ -162,7 +162,7 @@ App.PlacesView = Backbone.View.extend({
     add: function(place) {
         var view = new App.PlaceView({model: place});
         view.map = this.map;
-        this.$el.append(view.render().el);
+        this.$el.prepend(view.render().el);
         App.placesTab.activate();
     }
 });

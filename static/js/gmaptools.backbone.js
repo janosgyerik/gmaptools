@@ -331,7 +331,7 @@ App.MapController = Backbone.Model.extend({
                     lat: result.geometry.location.lat(),
                     lon: result.geometry.location.lng(),
                     address: result.formatted_address,
-                    types: result.types,
+                    types: _.map(result.types, function(item) { return item.replace(/_/g, ' '); }),
                     marker: marker
                 });
             }

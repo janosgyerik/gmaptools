@@ -11,7 +11,7 @@
 
 // the basic namespace
 // TODO: put in app.js
-window.App = {};
+var App = window.App = {};
 
 _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
@@ -70,7 +70,6 @@ App.MarkerImageFactory = Backbone.Collection.extend({
     baseurl: 'http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons',
     initialize: function() {
         this.presets = {
-            default: this.baseurl + '/green.png',
             search: this.baseurl + '/red-dot.png',
             latlon: this.baseurl + '/blue-dot.png',
             localSearch: this.baseurl + '/yellow-dot.png',
@@ -185,8 +184,8 @@ App.MapController = Backbone.Model.extend({
         this.places = places;
 
         // initialize helper factory objects
-        this.locationFactory = new App.LocationFactory;
-        this.markerImageFactory = new App.MarkerImageFactory;
+        this.locationFactory = new App.LocationFactory();
+        this.markerImageFactory = new App.MarkerImageFactory();
 
         // initialize google map objects
         if (google.loader.ClientLocation) {
@@ -288,7 +287,7 @@ App.MapController = Backbone.Model.extend({
     },
     localSearchCallback: function(results, status) {
         this.set({status: status});
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
             // this.errors.hide();
             for (var i = 0; i < results.length; ++i) {
                 var place = results[i];
@@ -324,10 +323,11 @@ App.MapController = Backbone.Model.extend({
     },
     geocodeCallback: function(results, status) {
         this.updateStatusFromGeocodeResults(results, status);
-        if (status == google.maps.GeocoderStatus.OK) {
+        var typeToWords = function(name) { return name.replace(/_/g, ' '); };
+        if (status === google.maps.GeocoderStatus.OK) {
             for (var i = 0; i < results.length; ++i) {
                 var result = results[i];
-                if (i == 0) {
+                if (i === 0) {
                     this.map.fitBounds(result.geometry.viewport);
                     this.map.setCenter(result.geometry.location);
                 }
@@ -337,7 +337,7 @@ App.MapController = Backbone.Model.extend({
                     lat: result.geometry.location.lat(),
                     lon: result.geometry.location.lng(),
                     address: result.formatted_address,
-                    types: _.map(result.types, function(item) { return item.replace(/_/g, ' '); }),
+                    types: _.map(result.types, typeToWords),
                     marker: marker
                 });
             }
@@ -345,7 +345,7 @@ App.MapController = Backbone.Model.extend({
     },
     updateStatusFromGeocodeResults: function(results, status) {
         this.set({status: status});
-        if (status == google.maps.GeocoderStatus.OK) {
+        if (status === google.maps.GeocoderStatus.OK) {
             // this.errors.hide();
             for (var i = 0; i < results.length; ++i) {
                 var result = results[i];
@@ -360,7 +360,7 @@ App.MapController = Backbone.Model.extend({
     },
     updateAddress: function() {
         var request = {
-            latLng: this.map.getCenter(),
+            latLng: this.map.getCenter()
         };
         // note: could not make this work with a var callback = function ...
         // had to create this.geocodeCallback to have proper
@@ -368,7 +368,7 @@ App.MapController = Backbone.Model.extend({
         // also, I couldn't get it to work with _.bind either...
         _.bindAll(this, 'updateStatusFromGeocodeResults');
         this.geocoder.geocode(request, this.updateStatusFromGeocodeResults);
-    },
+    }
 });
 
 App.Tool = Backbone.View.extend({
@@ -438,7 +438,7 @@ App.LatlonTool = App.Tool.extend({
         this.map.trigger('gotoHome');
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') {
+        if (e.keyCode === 13) {
             e.preventDefault();
             this.gotoLatLon();
         }
@@ -468,7 +468,7 @@ App.LocalSearchTool = App.Tool.extend({
         }
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') {
+        if (e.keyCode === 13) {
             e.preventDefault();
             this.localSearch();
         }
@@ -498,7 +498,7 @@ App.GeocodeTool = App.Tool.extend({
         }
     },
     onEnter: function(e) {
-        if (e.keyCode == '13') {
+        if (e.keyCode === 13) {
             e.preventDefault();
             this.geocode();
         }
@@ -567,12 +567,12 @@ App.OfflineView = Backbone.View.extend({
 function onGoogleMapsReady() {
     // instances
     // TODO: put in setup.js
-    App.places = new App.Places;
+    App.places = new App.Places();
     App.mapController = new App.MapController(App.places);
     App.latlonTool = new App.LatlonTool({map: App.mapController});
     App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
-    App.toolbar = new App.Toolbar;
+    App.toolbar = new App.Toolbar();
 
     App.infoTab = new App.InfoTab({el: '#mapinfo-details'});
     App.placesTab = new App.PlacesTab({el: '#mapinfo-places'});
@@ -593,7 +593,7 @@ function onGoogleMapsReady() {
         map: App.mapController
     });
 
-    App.router = new App.Router;
+    App.router = new App.Router();
 
     // initialize the Backbone router
     Backbone.history.start();
@@ -622,7 +622,7 @@ function onGoogleMapsReady() {
 }
 
 function offlineMode() {
-    var offlineView = new App.OfflineView;
+    var offlineView = new App.OfflineView();
     offlineView.render();
 }
 

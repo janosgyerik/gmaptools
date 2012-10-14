@@ -289,7 +289,7 @@ App.MapController = Backbone.Model.extend({
         this.set({status: status});
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             // this.errors.hide();
-            for (var i = 0; i < results.length; ++i) {
+            for (var i = results.length - 1; i >= 0; --i) {
                 var place = results[i];
                 var markerImage = this.markerImageFactory.getCustomMarkerImage(place.icon, {size: 25});
                 var marker = this.markerFactory.getMarker(place.geometry.location, markerImage);
@@ -325,7 +325,7 @@ App.MapController = Backbone.Model.extend({
         this.updateStatusFromGeocodeResults(results, status);
         var typeToWords = function(name) { return name.replace(/_/g, ' '); };
         if (status === google.maps.GeocoderStatus.OK) {
-            for (var i = 0; i < results.length; ++i) {
+            for (var i = results.length - 1; i >= 0; --i) {
                 var result = results[i];
                 if (i === 0) {
                     this.map.fitBounds(result.geometry.viewport);

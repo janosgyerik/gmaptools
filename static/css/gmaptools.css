@@ -24,14 +24,14 @@ body {
     overflow-x: hidden;
 }
 
-/* top, margin-left are tuned to #map.height=400 */
 div#crosshair {
     position: absolute;
-    top: 190px;
-    height: 19px;
-    width: 19px;
+    top: 50%;
     left: 50%;
     margin-left: -10px;
+    margin-top: -10px;
+    height: 19px;
+    width: 19px;
     display: block;
     background: url(../images/crosshair.gif);
     background-position: center center;

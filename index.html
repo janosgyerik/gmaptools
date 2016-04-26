@@ -62,6 +62,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#mapinfo-details" data-toggle="tab">Info</a></li>
                 <li><a href="#mapinfo-places" data-toggle="tab">Places</a></li>
+                <li><a href="#mapinfo-csv" data-toggle="tab">CSV</a></li>
                 <!--
                 <li><a href="#tab3" data-toggle="tab">History</a></li>
                 -->
@@ -70,6 +71,8 @@
                 <div class="tab-pane active" id="mapinfo-details">
                 </div>
                 <div class="tab-pane" id="mapinfo-places">
+                </div>
+                <div class="tab-pane" id="mapinfo-csv">
                 </div>
                 <div class="tab-pane" id="tab3">
                     <p>History entries will come here</p>
@@ -84,6 +87,7 @@
                     <li class="active"><a href="#latlon-tool" data-toggle="tab">LatLon</a></li>
                     <li><a href="#localsearch-tool" data-toggle="tab">Local search</a></li>
                     <li><a href="#geocode-tool" data-toggle="tab">Geocode</a></li>
+                    <li><a href="#geocode-multiline-tool" data-toggle="tab">Geocode (multiline)</a></li>
                     <!--
                     <li><a href="#options-tool" data-toggle="tab">Options</a></li>
                     -->
@@ -112,6 +116,13 @@
                             <button class="btn btn-link features" title="Features"><i class="icon-question-sign"></i></button>
                             <input type="text" class="input-small span6 address" placeholder="Address, ex: 6 Rue Gassendi 75014 Paris">
                             <a href="#" class="btn btn-geocode"><i class="icon-globe"></i> Geocode</a>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="geocode-multiline-tool">
+                        <form class="form-inline">
+                            <button class="btn btn-link features" title="Features"><i class="icon-question-sign"></i></button>
+                            <textarea type="text" class="span6 address" placeholder="Address, ex: 6 Rue Gassendi 75014 Paris"></textarea>
+                            <a href="#" class="btn btn-geocode-multiline"><i class="icon-globe"></i> Geocode</a>
                         </form>
                     </div>
                     <div class="tab-pane" id="options-tool">
@@ -175,6 +186,13 @@
             <dt>North-East Longitude:</dt>
             <dd>{{ ne_longitude }}</dd>
         </dl>
+    </div>
+</script>
+
+<!-- TODO: this should be moved to a file to serve via CDN -->
+<script type="text/template" id="mapinfo-csv-template">
+    <div class="view">
+        <pre>{{ csv }}</pre>
     </div>
 </script>
 

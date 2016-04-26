@@ -44,6 +44,19 @@ App.MapInfoQuickView = Backbone.View.extend({
     }
 });
 
+App.MapInfoCsv = Backbone.View.extend({
+    initialize: function() {
+        this.model.on('change', this.render, this);
+    },
+
+    template: _.template($('#mapinfo-csv-template').html()),
+
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+});
+
 App.LocationFactory = Backbone.Collection.extend({
     getLocation: function(lat, lon) {
         return new google.maps.LatLng(lat, lon);
@@ -168,6 +181,12 @@ App.PlacesView = Backbone.View.extend({
     }
 });
 
+App.CsvController = Backbone.Model.extend({
+    defaults: {
+        csv: ''
+    }
+});
+
 App.MapController = Backbone.Model.extend({
     defaults: {
         status: 'N.A.',
@@ -180,8 +199,9 @@ App.MapController = Backbone.Model.extend({
         ne_latitude: 'N.A.',
         ne_longitude: 'N.A.'
     },
-    initialize: function(places) {
+    initialize: function(places, csvController) {
         this.places = places;
+        this.csvController = csvController;
 
         // initialize helper factory objects
         this.locationFactory = new App.LocationFactory();
@@ -333,13 +353,21 @@ App.MapController = Backbone.Model.extend({
                 }
                 var markerImage = this.markerImageFactory.getPresetMarkerImage('geocode');
                 var marker = this.markerFactory.getMarker(result.geometry.location, markerImage);
-                this.places.add({
+                var data = {
                     lat: result.geometry.location.lat(),
                     lon: result.geometry.location.lng(),
                     address: result.formatted_address,
                     types: _.map(result.types, typeToWords),
                     marker: marker
-                });
+                };
+                this.places.add(data);
+
+                var csv = this.csvController.get('csv');
+                if (csv) {
+                    csv += '\n';
+                }
+                csv += (data.lon + ',' + data.lat + ',"' + data.address + '"');
+                this.csvController.set({csv: csv});
             }
         }
     },
@@ -384,6 +412,7 @@ App.Tool = Backbone.View.extend({
 
 App.InfoTab = App.Tool.extend();
 App.PlacesTab = App.Tool.extend();
+App.CsvTab = App.Tool.extend();
 
 App.LatlonTool = App.Tool.extend({
     el: $('#latlon-tool'),
@@ -505,12 +534,39 @@ App.GeocodeTool = App.Tool.extend({
     }
 });
 
+App.GeocodeMultilineTool = App.Tool.extend({
+    el: $('#geocode-multiline-tool'),
+    initialize: function(options) {
+        this.address = this.$('.address');
+        this.map = options.map;
+        this.$('.features').popover({
+            content: $('#features-geocode-multiline').html(),
+            placement: 'bottom',
+            trigger: 'hover'
+        });
+    },
+    fieldToFocus: this.$('.address'),
+    events: {
+        'click .btn-geocode-multiline': 'geocode'
+    },
+    geocode: function() {
+        var addressList = this.address.val().split('\n');
+        for (var i = 0; i < addressList.length; ++i) {
+            var address = addressList[i];
+            if (address) {
+                this.map.trigger('geocode', address);
+            }
+        }
+    }
+});
+
 App.Toolbar = Backbone.View.extend({
     el: $('#toolbar'),
     events: {
         'click a[href="#latlon-tool"]': 'openLatlonTool',
         'click a[href="#localsearch-tool"]': 'openLocalSearchTool',
-        'click a[href="#geocode-tool"]': 'openGeocodeTool'
+        'click a[href="#geocode-tool"]': 'openGeocodeTool',
+        'click a[href="#geocode-multiline-tool"]': 'openGeocodeMultilineTool'
     },
     openLatlonTool: function() {
         App.router.openLatlonTool();
@@ -520,6 +576,9 @@ App.Toolbar = Backbone.View.extend({
     },
     openGeocodeTool: function() {
         App.router.openGeocodeTool();
+    },
+    openGeocodeMultilineTool: function() {
+        App.router.openGeocodeMultilineTool();
     }
 });
 
@@ -550,6 +609,9 @@ App.Router = Backbone.Router.extend({
     },
     openGeocodeTool: function() {
         this.navigate('tools/geocode', {trigger: true});
+    },
+    openGeocodeMultilineTool: function() {
+        this.navigate('tools/geocode-multiline', {trigger: true});
     }
 });
 
@@ -568,18 +630,26 @@ function onGoogleMapsReady() {
     // instances
     // TODO: put in setup.js
     App.places = new App.Places();
-    App.mapController = new App.MapController(App.places);
+    App.csvController = new App.CsvController();
+    App.mapController = new App.MapController(App.places, App.csvController);
     App.latlonTool = new App.LatlonTool({map: App.mapController});
     App.localSearchTool = new App.LocalSearchTool({map: App.mapController});
     App.geocodeTool = new App.GeocodeTool({map: App.mapController});
+    App.geocodeMultilineTool = new App.GeocodeMultilineTool({map: App.mapController});
     App.toolbar = new App.Toolbar();
 
     App.infoTab = new App.InfoTab({el: '#mapinfo-details'});
     App.placesTab = new App.PlacesTab({el: '#mapinfo-places'});
+    App.csvTab = new App.CsvTab({el: '#mapinfo-csv'});
 
     App.detailedstats = new App.MapInfoDetails({
         el: $('#mapinfo-details'),
         model: App.mapController
+    });
+
+    App.csvView = new App.MapInfoCsv({
+        el: $('#mapinfo-csv'),
+        model: App.csvController
     });
 
     App.quickstats = new App.MapInfoQuickView({

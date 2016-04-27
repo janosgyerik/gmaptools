@@ -24,6 +24,12 @@ body {
     overflow-x: hidden;
 }
 
+#mapinfo-csv {
+    max-height: 450px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
 div#crosshair {
     position: absolute;
     top: 50%;
@@ -61,6 +67,5 @@ div.place .destroy {
 div.place:hover .destroy {
     display: block;
 }
-
 
 /* eof */

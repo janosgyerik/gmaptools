@@ -587,6 +587,7 @@ App.Router = Backbone.Router.extend({
         'tools/latlon': 'activateLatlon',
         'tools/localSearch': 'activateLocalSearch',
         'tools/geocode': 'activateGeocode',
+        'tools/geocode-multiline': 'activateGeocodeMultiline',
         '*placeholder': 'activateLatlon'
     },
     activateTool: function(tool) {
@@ -600,6 +601,9 @@ App.Router = Backbone.Router.extend({
     },
     activateGeocode: function() {
         this.activateTool(App.geocodeTool);
+    },
+    activateGeocodeMultiline: function() {
+        this.activateTool(App.geocodeMultilineTool);
     },
     openLatlonTool: function() {
         this.navigate('tools/latlon', {trigger: true});
